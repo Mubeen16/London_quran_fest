@@ -61,12 +61,12 @@ const Home: React.FC = () => {
                     <Card animate className="p-8">
                         <div className="text-accent text-4xl mb-4 flex justify-center"><FaQuran /></div>
                         <h3 className="text-xl font-bold mb-2">Hifz Categories</h3>
-                        <p className="text-gray-600">From 3 Juz to the full Holy Quran. Challenge yourself in memorization.</p>
+                        <p className="text-gray-600">From Short Surahs to 5 Juz. Challenge yourself in memorization.</p>
                     </Card>
                     <Card animate className="p-8">
                         <div className="text-accent text-4xl mb-4 flex justify-center"><FaMicrophone /></div>
-                        <h3 className="text-xl font-bold mb-2">Beautiful Tilawah</h3>
-                        <p className="text-gray-600">Showcase your voice and mastery of Tajweed rules in our recitation category.</p>
+                        <h3 className="text-xl font-bold mb-2">Mastery of Tajweed</h3>
+                        <p className="text-gray-600">Showcase your voice. Tajweed rules are integral to every category.</p>
                     </Card>
                     <Card animate className="p-8">
                         <div className="text-accent text-4xl mb-4 flex justify-center"><FaAward /></div>
@@ -83,8 +83,8 @@ const Home: React.FC = () => {
                     <div className="w-24 h-1 bg-accent mx-auto rounded-full"></div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {textCategories.slice(0, 3).map((cat) => (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {textCategories.map((cat) => (
                         <Card key={cat.id} animate className="hover:shadow-lg transition-shadow border-t-4 border-t-transparent hover:border-t-accent">
                             <div className="flex justify-between items-start mb-4">
                                 <h3 className="text-xl font-bold text-primary">{cat.title}</h3>
