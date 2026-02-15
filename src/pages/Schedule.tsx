@@ -5,11 +5,9 @@ import { FaMapMarkerAlt, FaClock } from 'react-icons/fa';
 
 const Schedule: React.FC = () => {
     const events = [
-        { day: 'Friday', date: 'June 5, 2026', time: '14:00 - 18:00', title: 'Preliminary Rounds (Hifz)', location: 'Hall A' },
-        { day: 'Saturday', date: 'June 6, 2026', time: '09:00 - 13:00', title: 'Start of 5 & 10 Juz Categories', location: 'Hall B' },
-        { day: 'Saturday', date: 'June 6, 2026', time: '14:00 - 19:00', title: 'Tilawah Qualification', location: 'Main Auditorium' },
-        { day: 'Sunday', date: 'June 7, 2026', time: '10:00 - 16:00', title: 'Grand Finale (All Categories)', location: 'Main Auditorium' },
-        { day: 'Sunday', date: 'June 7, 2026', time: '18:00 - 20:00', title: 'Award Ceremony', location: 'Main Auditorium' },
+        { day: 'Saturday', date: 'April 04, 2026', time: '10:00 - 18:00', title: 'Preliminary Round (Online)', location: 'Zoom / Online' },
+        { day: 'Saturday', date: 'April 11, 2026', time: '09:00 - 17:00', title: 'Grand Finale (All Categories)', location: 'London (Venue TBC)' },
+        { day: 'Saturday', date: 'April 11, 2026', time: '18:00 - 20:00', title: 'Award Ceremony', location: 'London (Venue TBC)' },
     ];
 
     return (

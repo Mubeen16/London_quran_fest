@@ -30,7 +30,7 @@ const Home: React.FC = () => {
                         </p>
 
                         <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6 text-white drop-shadow-lg">
-                            London's most awaited <br /><span className="text-accent">Qur'an event '26</span>
+                            London's most awaited <br /><span className="text-accent">Quran Fest '26</span>
                         </h1>
 
                         <p className="max-w-2xl mx-auto text-lg text-gray-200 mb-10 leading-relaxed uppercase tracking-widest font-semibold text-accent">

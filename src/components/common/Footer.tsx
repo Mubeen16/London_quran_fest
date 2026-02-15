@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
                 <div>
                     <h3 className="text-xl font-serif font-bold text-white mb-4 flex items-center gap-2">
                         <FaMosque className="text-accent" />
-                        Annual Quran Competition
+                        London Quran Fest
                     </h3>
                     <p className="text-sm leading-relaxed">
                         Fostering love for the Holy Quran in the hearts of our youth.
@@ -40,11 +40,18 @@ const Footer: React.FC = () => {
                         </li>
                         <li className="flex items-center gap-3">
                             <FaPhone className="text-accent" />
-                            <span>07917 044 585 | 07534 039 748</span>
+                            <div className="flex flex-col">
+                                <span>+91 81 3789 8323</span>
+                                <span>+91 95627 42433</span>
+                                <span>+44 791 704 4585</span>
+                            </div>
                         </li>
                         <li className="flex items-center gap-3">
                             <FaEnvelope className="text-accent" />
-                            <span>academy@alihsan.co.uk</span>
+                            <div className="flex flex-col">
+                                <span>londonquranfest@gmail.com</span>
+                                <span>academy@alihsan.co.uk</span>
+                            </div>
                         </li>
                     </ul>
                 </div>

@@ -24,37 +24,37 @@ const Contact: React.FC = () => {
                             We are here to assist you with registration, sponsorship, or general inquiries.
                         </p>
 
-                        <div className="space-y-4">
-                            <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary text-xl"><FaPhone /></div>
-                                <div>
-                                    <p className="text-xs text-gray-500 uppercase font-bold">Phone</p>
-                                    <p className="text-lg font-medium">07917 044 585 | 07534 039 748</p>
-                                </div>
-                            </div>
-                            <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary text-xl"><FaEnvelope /></div>
-                                <div>
-                                    <p className="text-xs text-gray-500 uppercase font-bold">Email</p>
-                                    <p className="text-lg font-medium">academy@alihsan.co.uk</p>
-                                </div>
-                            </div>
-                            <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary text-xl"><FaMapMarkerAlt /></div>
-                                <div>
-                                    <p className="text-xs text-gray-500 uppercase font-bold">Address</p>
-                                    <p className="text-lg font-medium">Al Ihsan Academy, London, UK</p>
-                                </div>
+                        <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary text-xl"><FaPhone /></div>
+                            <div>
+                                <p className="text-xs text-gray-500 uppercase font-bold">Phone</p>
+                                <p className="text-lg font-medium">+91 81 3789 8323 | +91 95627 42433</p>
+                                <p className="text-lg font-medium">+44 791 704 4585</p>
                             </div>
                         </div>
+                        <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary text-xl"><FaEnvelope /></div>
+                            <div>
+                                <p className="text-xs text-gray-500 uppercase font-bold">Email</p>
+                                <p className="text-lg font-medium">londonquranfest@gmail.com</p>
+                                <p className="text-lg font-medium">academy@alihsan.co.uk</p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary text-xl"><FaMapMarkerAlt /></div>
+                            <div>
+                                <p className="text-xs text-gray-500 uppercase font-bold">Address</p>
+                                <p className="text-lg font-medium">Al Ihsan Academy, London, UK</p>
+                            </div>
+                        </div>
+                    </div>
 
-                        <div className="pt-6">
-                            <a href="https://wa.me/441234567890" target="_blank" rel="noreferrer">
-                                <Button variant="secondary" className="gap-2 flex items-center w-full md:w-auto">
-                                    <FaWhatsapp className="text-xl" /> Chat on WhatsApp
-                                </Button>
-                            </a>
-                        </div>
+                    <div className="pt-6">
+                        <a href="https://wa.me/918137898323" target="_blank" rel="noreferrer">
+                            <Button variant="secondary" className="gap-2 flex items-center w-full md:w-auto">
+                                <FaWhatsapp className="text-xl" /> Chat on WhatsApp
+                            </Button>
+                        </a>
                     </div>
 
                     {/* Map */}

@@ -9,42 +9,35 @@ export interface Category {
 
 export const textCategories: Category[] = [
     {
-        id: 'hifz-full',
-        title: 'Hifz of Full Quran',
-        arabicTitle: 'حفظ القرآن كاملاً',
-        ageLimit: 'Under 25',
-        description: 'Memorization of the entire Holy Quran with Tajweed.',
-        juzCount: 30
+        id: 'level-1',
+        title: 'Level 1',
+        arabicTitle: 'المستوى الأول',
+        ageLimit: '8 & below',
+        description: 'Surah Al-Fil to An-Nas (Age: 8 & below)',
+        juzCount: 0 // Partial Juz
     },
     {
-        id: 'hifz-20',
-        title: '20 Juz Category',
-        arabicTitle: 'فئة ٢٠ جزء',
-        ageLimit: 'Under 20',
-        description: 'Memorization of 20 Juz from the Holy Quran.',
-        juzCount: 20
+        id: 'level-2',
+        title: 'Level 2',
+        arabicTitle: 'المستوى الثاني',
+        ageLimit: '9 - 13',
+        description: 'Surah Al-A\'la to An-Nas (Age: 9 - 13)',
+        juzCount: 0 // Partial Juz
     },
     {
-        id: 'hifz-10',
-        title: '10 Juz Category',
-        arabicTitle: 'فئة ١٠ أجزاء',
-        ageLimit: 'Under 15',
-        description: 'Memorization of 10 consecutive Juz.',
-        juzCount: 10
+        id: 'level-3',
+        title: 'Level 3',
+        arabicTitle: 'المستوى الثالث',
+        ageLimit: '9 - 18',
+        description: 'Any 2 Juz (Amma + Mulk) + Surah Yasin (Age: 9 to 18)',
+        juzCount: 2
     },
     {
-        id: 'hifz-5',
-        title: '5 Juz Category',
-        arabicTitle: 'فئة ٥ أجزاء',
-        ageLimit: 'Under 12',
-        description: 'Perfect for young aspiring Huffaz.',
+        id: 'level-4',
+        title: 'Level 4 (Higher Level)',
+        arabicTitle: 'المستوى الرابع',
+        ageLimit: '9 - 18',
+        description: 'Any 5 Juz (Consecutive) (Age: 9 to 18)',
         juzCount: 5
-    },
-    {
-        id: 'tilawah',
-        title: 'Tilawah (Recitation)',
-        arabicTitle: 'التلواة',
-        ageLimit: 'Open',
-        description: 'Focus on beautiful voice, melody, and Maqamat.',
-    },
+    }
 ];

@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import { HiMenu, HiX } from 'react-icons/hi';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import logo from '../../assets/logo.png';
-
 const Navbar: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -24,7 +22,7 @@ const Navbar: React.FC = () => {
                 {/* Logo */}
                 <Link to="/" className="text-2xl font-serif font-bold tracking-wide flex items-center gap-2">
                     {/* <span className="text-accent text-3xl">۞</span> */}
-                    <img src={logo} alt="Al Ihsan Academy Logo" className="w-12 h-12 rounded-full object-cover border-2 border-accent" />
+                    <img src="/logo.png" alt="Al Ihsan Academy Logo" className="w-12 h-12 rounded-full object-cover border-2 border-accent" />
                     <span className="hidden sm:inline">Al Ihsan Academy</span>
                 </Link>
 

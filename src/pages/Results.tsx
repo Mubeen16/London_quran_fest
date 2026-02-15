@@ -12,16 +12,16 @@ interface Result {
 }
 
 const mockResults: Result[] = [
-    { rank: 1, name: 'Abdullah Ahmed', category: 'hifz-full', score: 98.5 },
-    { rank: 2, name: 'Omar Farooq', category: 'hifz-full', score: 97.0 },
-    { rank: 3, name: 'Zaid Ali', category: 'hifz-full', score: 96.5 },
-    { rank: 1, name: 'Yusuf Khan', category: 'hifz-20', score: 99.0 },
-    { rank: 2, name: 'Ibrahim Musa', category: 'hifz-20', score: 95.0 },
-    { rank: 1, name: 'Bilal Hassan', category: 'tilawah', score: 98.0 },
+    { rank: 1, name: 'Abdullah Ahmed', category: 'level-4', score: 98.5 },
+    { rank: 2, name: 'Omar Farooq', category: 'level-4', score: 97.0 },
+    { rank: 3, name: 'Zaid Ali', category: 'level-4', score: 96.5 },
+    { rank: 1, name: 'Yusuf Khan', category: 'level-3', score: 99.0 },
+    { rank: 2, name: 'Ibrahim Musa', category: 'level-3', score: 95.0 },
+    { rank: 1, name: 'Bilal Hassan', category: 'level-1', score: 98.0 },
 ];
 
 const Results: React.FC = () => {
-    const [activeCategory, setActiveCategory] = useState('hifz-full');
+    const [activeCategory, setActiveCategory] = useState('level-4');
 
     const filteredResults = mockResults
         .filter(r => r.category === activeCategory)
