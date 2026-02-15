@@ -12,12 +12,12 @@ interface Result {
 }
 
 const mockResults: Result[] = [
-    { rank: 1, name: 'Abdullah Ahmed', category: 'level-4', score: 98.5 },
-    { rank: 2, name: 'Omar Farooq', category: 'level-4', score: 97.0 },
-    { rank: 3, name: 'Zaid Ali', category: 'level-4', score: 96.5 },
-    { rank: 1, name: 'Yusuf Khan', category: 'level-3', score: 99.0 },
-    { rank: 2, name: 'Ibrahim Musa', category: 'level-3', score: 95.0 },
-    { rank: 1, name: 'Bilal Hassan', category: 'level-1', score: 98.0 },
+    // { rank: 1, name: 'Abdullah Ahmed', category: 'level-4', score: 98.5 },
+    // { rank: 2, name: 'Omar Farooq', category: 'level-4', score: 97.0 },
+    // { rank: 3, name: 'Zaid Ali', category: 'level-4', score: 96.5 },
+    // { rank: 1, name: 'Yusuf Khan', category: 'level-3', score: 99.0 },
+    // { rank: 2, name: 'Ibrahim Musa', category: 'level-3', score: 95.0 },
+    // { rank: 1, name: 'Bilal Hassan', category: 'level-1', score: 98.0 },
 ];
 
 const Results: React.FC = () => {
@@ -115,8 +115,10 @@ const Results: React.FC = () => {
                         </div>
                     </div>
                 ) : (
-                    <div className="text-center py-20 text-gray-400">
-                        No results available for this category yet.
+                    <div className="text-center py-20">
+                        <div className="text-6xl text-gray-200 mb-6 flex justify-center"><FaTrophy /></div>
+                        <h3 className="text-2xl font-serif font-bold text-gray-500 mb-2">Results Coming Soon</h3>
+                        <p className="text-gray-400">Competition results will be published here after the Finale in April 2026.</p>
                     </div>
                 )}
             </Section>
