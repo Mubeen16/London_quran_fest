@@ -10,8 +10,8 @@ interface TimeLeft {
 
 const CountdownTimer: React.FC = () => {
     const calculateTimeLeft = (): TimeLeft => {
-        // Set competition date (e.g., 3 months from now or fixed date)
-        const competitionDate = new Date('2026-06-01T09:00:00');
+        // Set competition date (April 4th, 2026)
+        const competitionDate = new Date('2026-04-04T09:00:00');
         const now = new Date();
         const difference = competitionDate.getTime() - now.getTime();
 
