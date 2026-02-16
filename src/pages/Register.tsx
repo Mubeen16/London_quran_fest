@@ -3,7 +3,7 @@ import Section from '../components/common/Section';
 import Card from '../components/common/Card';
 import Button from '../components/common/Button';
 import { textCategories } from '../data/categories';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 const Register: React.FC = () => {
@@ -158,6 +158,27 @@ const Register: React.FC = () => {
         }
     };
 
+    const navigate = useNavigate();
+
+    const handleReset = () => {
+        setFormData({
+            fullName: '',
+            dateOfBirth: '',
+            gender: 'male',
+            category: initialCategory,
+            parentName: '',
+            phone: '',
+            email: '',
+            address: '',
+            transactionId: '',
+            notes: ''
+        });
+        setPaymentFile(null);
+        setSubmitted(false);
+        setError('');
+        window.scrollTo(0, 0);
+    };
+
     if (submitted) {
         return (
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md">
@@ -202,13 +223,13 @@ const Register: React.FC = () => {
 
                         <div className="space-y-3">
                             <Button
-                                onClick={() => window.location.reload()}
+                                onClick={handleReset}
                                 className="w-full bg-[#0f5132] hover:bg-[#0b3d26] text-white py-3 rounded-lg shadow-md hover:shadow-lg transition-all"
                             >
                                 Register Another Participant
                             </Button>
                             <button
-                                onClick={() => window.location.href = '/'}
+                                onClick={() => navigate('/')}
                                 className="text-sm text-gray-400 hover:text-gray-600 transition-colors"
                             >
                                 Return to Home
