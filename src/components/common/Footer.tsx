@@ -41,8 +41,8 @@ const Footer: React.FC = () => {
                         <li className="flex items-center gap-3">
                             <FaPhone className="text-accent" />
                             <div className="flex flex-col">
-                                <span>+44 7466139997 (UK)</span>
-                                <span>+91 81 3789 8323 (India)</span>
+                                <span>+44 7466139997 in UK</span>
+                                <span>+91 81 3789 8323 in India</span>
                             </div>
                         </li>
                         <li className="flex items-center gap-3">
