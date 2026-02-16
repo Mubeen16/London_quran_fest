@@ -38,6 +38,7 @@ const Register: React.FC = () => {
     const [submitted, setSubmitted] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState('');
+    const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string }>({});
     const [showExample, setShowExample] = useState(false);
 
     // File Upload State
@@ -46,11 +47,20 @@ const Register: React.FC = () => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
+        // Clear error when user starts typing
+        if (fieldErrors[name]) {
+            setFieldErrors(prev => ({ ...prev, [name]: '' }));
+        }
     };
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
+
+            // Clear file error
+            if (fieldErrors['paymentFile']) {
+                setFieldErrors(prev => ({ ...prev, paymentFile: '' }));
+            }
 
             // Limit to 4MB to prevent timeouts
             if (file.size > 4 * 1024 * 1024) {
@@ -80,53 +90,71 @@ const Register: React.FC = () => {
         e.preventDefault();
         setIsSubmitting(true);
         setError('');
+        setFieldErrors({});
+
+        const newErrors: { [key: string]: string } = {};
 
         // Basic validation
-        if (!formData.fullName || !formData.phone || !formData.category || !formData.transactionId) {
-            setError('Please fill in all required fields including Payment Reference.');
-            setIsSubmitting(false);
-            return;
-        }
+        if (!formData.fullName.trim()) newErrors.fullName = 'Full Name is required';
+        if (!formData.dateOfBirth) newErrors.dateOfBirth = 'Date of Birth is required';
+        if (!formData.category) newErrors.category = 'Competition Level is required';
+        if (!formData.address.trim()) newErrors.address = 'Address is required';
 
         // Validate Phone Number
         // Must start with + and have at least 10 digits
         const phoneRegex = /^\+[0-9\s-]{10,20}$/;
-        if (!phoneRegex.test(formData.phone.trim())) {
-            setError('Please enter a valid phone number starting with the country code (+). Example: +44 7466 123456');
-            setIsSubmitting(false);
-            return;
+        if (!formData.phone.trim()) {
+            newErrors.phone = 'Phone Number is required';
+        } else if (!phoneRegex.test(formData.phone.trim())) {
+            newErrors.phone = 'Invalid format. Use +[Code][Number] (e.g. +44 7466 123456)';
         }
 
         // Validate Parent Name for Minors
         const age = calculateAge(formData.dateOfBirth);
         const isMinor = age < 18;
 
-        if (isMinor && !formData.parentName) {
-            setError('Parent / Guardian Name is required for participants under 18.');
-            setIsSubmitting(false);
-            return;
+        if (isMinor && !formData.parentName.trim()) {
+            newErrors.parentName = 'Parent / Guardian Name is required for participants under 18.';
         }
 
         // Validate Email
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(formData.email.trim())) {
-            setError('Please enter a valid email address (e.g. name@example.com).');
-            setIsSubmitting(false);
-            return;
+        if (!formData.email.trim()) {
+            newErrors.email = 'Email Address is required';
+        } else if (!emailRegex.test(formData.email.trim())) {
+            newErrors.email = 'Invalid email address';
         }
 
         // Validate Transaction ID format
         const txnIdRegex = /^[A-Za-z0-9]{17}$/;
-        if (!txnIdRegex.test(formData.transactionId.trim())) {
-            setError('PayPal Transaction ID must be exactly 17 alphanumeric characters (e.g., 0FT064904K8018433).');
-            setIsSubmitting(false);
-            return;
+        if (!formData.transactionId.trim()) {
+            newErrors.transactionId = 'Transaction ID is required';
+        } else if (!txnIdRegex.test(formData.transactionId.trim())) {
+            newErrors.transactionId = 'Must be exactly 17 alphanumeric characters';
         }
 
         // MANDATORY Payment Screenshot Validation
         if (!paymentFile) {
-            setError('Please upload a screenshot of your PayPal payment confirmation.');
+            newErrors.paymentFile = 'Payment Screenshot is required';
+        }
+
+        if (Object.keys(newErrors).length > 0) {
+            setFieldErrors(newErrors);
+            setError('Please correct the highlighted errors before submitting.');
             setIsSubmitting(false);
+
+            // Scroll to first error
+            const firstErrorKey = Object.keys(newErrors)[0];
+            const element = document.getElementsByName(firstErrorKey)[0];
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                element.focus();
+            } else if (firstErrorKey === 'paymentFile') {
+                // Special handling for file input if name attribute isn't directly on the actionable element or if custom styled
+                const fileInput = document.getElementById('payment-file-upload');
+                if (fileInput) fileInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
             return;
         }
 
@@ -176,6 +204,7 @@ const Register: React.FC = () => {
         setPaymentFile(null);
         setSubmitted(false);
         setError('');
+        setFieldErrors({});
         window.scrollTo(0, 0);
     };
 
@@ -291,9 +320,10 @@ const Register: React.FC = () => {
                                         required
                                         value={formData.fullName}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none font-medium text-gray-800 placeholder-gray-400"
+                                        className={`w-full px-4 py-3 bg-gray-50 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none font-medium text-gray-800 placeholder-gray-400 ${fieldErrors.fullName ? 'border-red-500 bg-red-50' : 'border-gray-200'}`}
                                         placeholder="Enter full name"
                                     />
+                                    {fieldErrors.fullName && <p className="text-red-500 text-xs mt-1">{fieldErrors.fullName}</p>}
                                 </div>
                                 <div className="space-y-2">
                                     <label className="block text-xs uppercase tracking-wider font-bold text-gray-500">Date of Birth *</label>
@@ -304,8 +334,9 @@ const Register: React.FC = () => {
                                         value={formData.dateOfBirth}
                                         onChange={handleChange}
                                         max={new Date().toISOString().split("T")[0]}
-                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none font-medium text-gray-800 placeholder-gray-400"
+                                        className={`w-full px-4 py-3 bg-gray-50 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none font-medium text-gray-800 placeholder-gray-400 ${fieldErrors.dateOfBirth ? 'border-red-500 bg-red-50' : 'border-gray-200'}`}
                                     />
+                                    {fieldErrors.dateOfBirth && <p className="text-red-500 text-xs mt-1">{fieldErrors.dateOfBirth}</p>}
                                 </div>
                                 <div className="space-y-2">
                                     <label className="block text-xs uppercase tracking-wider font-bold text-gray-500">Gender *</label>
@@ -332,7 +363,7 @@ const Register: React.FC = () => {
                                             required
                                             value={formData.category}
                                             onChange={handleChange}
-                                            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none font-medium text-gray-800 appearance-none"
+                                            className={`w-full px-4 py-3 bg-gray-50 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none font-medium text-gray-800 appearance-none ${fieldErrors.category ? 'border-red-500 bg-red-50' : 'border-gray-200'}`}
                                         >
                                             <option value="" disabled>-- Select Category --</option>
                                             {textCategories.map(cat => (
@@ -343,6 +374,7 @@ const Register: React.FC = () => {
                                             ▼
                                         </div>
                                     </div>
+                                    {fieldErrors.category && <p className="text-red-500 text-xs mt-1">{fieldErrors.category}</p>}
                                 </div>
                             </div>
                         </div>
@@ -364,9 +396,10 @@ const Register: React.FC = () => {
                                         required={calculateAge(formData.dateOfBirth) < 18}
                                         value={formData.parentName}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none font-medium text-gray-800 placeholder-gray-400"
+                                        className={`w-full px-4 py-3 bg-gray-50 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none font-medium text-gray-800 placeholder-gray-400 ${fieldErrors.parentName ? 'border-red-500 bg-red-50' : 'border-gray-200'}`}
                                         placeholder={(calculateAge(formData.dateOfBirth) >= 18) ? "Optional" : "Authorized Guardian Name"}
                                     />
+                                    {fieldErrors.parentName && <p className="text-red-500 text-xs mt-1">{fieldErrors.parentName}</p>}
                                 </div>
                                 <div className="space-y-2">
                                     <label className="block text-xs uppercase tracking-wider font-bold text-gray-500">Phone Number *</label>
@@ -376,9 +409,10 @@ const Register: React.FC = () => {
                                         required
                                         value={formData.phone}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none font-medium text-gray-800 placeholder-gray-400"
+                                        className={`w-full px-4 py-3 bg-gray-50 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none font-medium text-gray-800 placeholder-gray-400 ${fieldErrors.phone ? 'border-red-500 bg-red-50' : 'border-gray-200'}`}
                                         placeholder="+44 7..."
                                     />
+                                    {fieldErrors.phone && <p className="text-red-500 text-xs mt-1">{fieldErrors.phone}</p>}
                                     <p className="text-xs text-gray-400 mt-1">Format: +[Country Code] [Number] (e.g. +44 7466 123456)</p>
                                 </div>
                                 <div className="space-y-2">
@@ -389,9 +423,10 @@ const Register: React.FC = () => {
                                         required
                                         value={formData.email}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none font-medium text-gray-800 placeholder-gray-400"
+                                        className={`w-full px-4 py-3 bg-gray-50 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none font-medium text-gray-800 placeholder-gray-400 ${fieldErrors.email ? 'border-red-500 bg-red-50' : 'border-gray-200'}`}
                                         placeholder="name@example.com"
                                     />
+                                    {fieldErrors.email && <p className="text-red-500 text-xs mt-1">{fieldErrors.email}</p>}
                                 </div>
                                 <div className="md:col-span-2 space-y-2">
                                     <label className="block text-xs uppercase tracking-wider font-bold text-gray-500">Address / City *</label>
@@ -401,9 +436,10 @@ const Register: React.FC = () => {
                                         required
                                         value={formData.address}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none font-medium text-gray-800 placeholder-gray-400"
+                                        className={`w-full px-4 py-3 bg-gray-50 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none font-medium text-gray-800 placeholder-gray-400 ${fieldErrors.address ? 'border-red-500 bg-red-50' : 'border-gray-200'}`}
                                         placeholder="Full address"
                                     />
+                                    {fieldErrors.address && <p className="text-red-500 text-xs mt-1">{fieldErrors.address}</p>}
                                 </div>
                             </div>
                         </div>
@@ -443,11 +479,13 @@ const Register: React.FC = () => {
                                         onChange={(e) => {
                                             const val = e.target.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
                                             setFormData(prev => ({ ...prev, transactionId: val }));
+                                            if (fieldErrors.transactionId) setFieldErrors(prev => ({ ...prev, transactionId: '' }));
                                         }}
                                         maxLength={17}
-                                        className="w-full px-4 py-3 bg-white border-2 border-dashed border-gray-300 rounded-lg focus:ring-none focus:border-accent transition-all font-mono text-lg uppercase tracking-widest text-center text-primary placeholder-gray-300"
+                                        className={`w-full px-4 py-3 bg-white border-2 border-dashed rounded-lg focus:ring-none focus:border-accent transition-all font-mono text-lg uppercase tracking-widest text-center text-primary placeholder-gray-300 ${fieldErrors.transactionId ? 'border-red-500 bg-red-50' : 'border-gray-300'}`}
                                         placeholder="ENTER ID HERE"
                                     />
+                                    {fieldErrors.transactionId && <p className="text-red-500 text-xs mt-1 text-center">{fieldErrors.transactionId}</p>}
                                     <div className="flex justify-between items-center px-1">
                                         <p className="text-xs text-gray-400">17-character alphanumeric code</p>
                                         <button
@@ -475,11 +513,10 @@ const Register: React.FC = () => {
                                 {/* File Upload */}
                                 <div className="space-y-2">
                                     <label className="block text-xs uppercase tracking-wider font-bold text-gray-500">Payment Screenshot *</label>
-                                    <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer group relative">
-
+                                    <div className={`mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-dashed rounded-lg transition-colors cursor-pointer group relative ${fieldErrors.paymentFile ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-gray-50 hover:bg-gray-100'}`}>
                                         <input
-                                            id="file-upload"
-                                            name="file-upload"
+                                            id="payment-file-upload"
+                                            name="paymentFile"
                                             type="file"
                                             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                                             accept="image/*"
@@ -495,19 +532,20 @@ const Register: React.FC = () => {
                                                 </div>
                                             ) : (
                                                 <>
-                                                    <svg className="mx-auto h-12 w-12 text-gray-400 group-hover:text-primary transition-colors" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                                    <svg className={`mx-auto h-12 w-12 transition-colors ${fieldErrors.paymentFile ? 'text-red-400' : 'text-gray-400 group-hover:text-primary'}`} stroke="currentColor" fill="none" viewBox="0 0 48 48">
                                                         <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                                     </svg>
                                                     <div className="flex text-sm text-gray-600 justify-center">
-                                                        <span className="relative rounded-md font-medium text-primary group-hover:text-primary-dark focus-within:outline-none">
+                                                        <span className={`relative rounded-md font-medium focus-within:outline-none ${fieldErrors.paymentFile ? 'text-red-600' : 'text-primary group-hover:text-primary-dark'}`}>
                                                             Upload Screenshot
                                                         </span>
                                                     </div>
-                                                    <p className="text-xs text-gray-500">PNG, JPG up to 4MB</p>
+                                                    <p className={`text-xs ${fieldErrors.paymentFile ? 'text-red-500' : 'text-gray-500'}`}>PNG, JPG up to 4MB</p>
                                                 </>
                                             )}
                                         </div>
                                     </div>
+                                    {fieldErrors.paymentFile && <p className="text-red-500 text-xs mt-1 text-center">{fieldErrors.paymentFile}</p>}
                                 </div>
                             </div>
                         </div>
