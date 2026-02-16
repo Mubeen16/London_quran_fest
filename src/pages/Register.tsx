@@ -86,6 +86,23 @@ const Register: React.FC = () => {
             return;
         }
 
+        // Validate Phone Number
+        // Must start with + and have at least 10 digits
+        const phoneRegex = /^\+[0-9\s-]{10,20}$/;
+        if (!phoneRegex.test(formData.phone.trim())) {
+            setError('Please enter a valid phone number starting with the country code (+). Example: +44 7466 123456');
+            setIsSubmitting(false);
+            return;
+        }
+        const ageNum = parseInt(formData.age);
+        const isMinor = isNaN(ageNum) || ageNum < 18;
+
+        if (isMinor && !formData.parentName) {
+            setError('Parent / Guardian Name is required for participants under 18.');
+            setIsSubmitting(false);
+            return;
+        }
+
         // Validate Transaction ID format
         // User confirmed PayPal Transaction IDs are exactly 17 alphanumeric characters.
         const txnIdRegex = /^[A-Za-z0-9]{17}$/;
@@ -343,6 +360,7 @@ const Register: React.FC = () => {
                                         className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none font-medium text-gray-800 placeholder-gray-400"
                                         placeholder="+44 7..."
                                     />
+                                    <p className="text-xs text-gray-400 mt-1">Format: +[Country Code] [Number] (e.g. +44 7466 123456)</p>
                                 </div>
                                 <div className="space-y-2">
                                     <label className="block text-xs uppercase tracking-wider font-bold text-gray-500">Email Address *</label>
