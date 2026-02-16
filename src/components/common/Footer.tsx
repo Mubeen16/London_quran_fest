@@ -41,9 +41,8 @@ const Footer: React.FC = () => {
                         <li className="flex items-center gap-3">
                             <FaPhone className="text-accent" />
                             <div className="flex flex-col">
-                                <span>+91 81 3789 8323</span>
-                                <span>+91 95627 42433</span>
-                                <span>+44 791 704 4585</span>
+                                <span>+44 7466139997 (UK)</span>
+                                <span>+91 81 3789 8323 (India)</span>
                             </div>
                         </li>
                         <li className="flex items-center gap-3">
@@ -58,7 +57,7 @@ const Footer: React.FC = () => {
             </div>
 
             <div className="mt-10 border-t border-gray-700 pt-6 text-center text-sm">
-                <p>&copy; 2026 Annual Quran Competition. All rights reserved.</p>
+                <p>&copy; 2026 London Quran Fest. All rights reserved.</p>
             </div>
         </footer>
     );
