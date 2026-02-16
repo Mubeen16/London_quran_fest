@@ -28,8 +28,8 @@ const Contact: React.FC = () => {
                             <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary text-xl"><FaPhone /></div>
                             <div>
                                 <p className="text-xs text-gray-500 uppercase font-bold">Phone</p>
-                                <p className="text-lg font-medium">+44 7466139997 in UK</p>
-                                <p className="text-lg font-medium">+91 81 3789 8323 in India</p>
+                                <p className="text-lg font-medium">+44 7466 139997</p>
+                                <p className="text-lg font-medium">+91 81 3789 8323</p>
                             </div>
                         </div>
                         <div className="flex items-center gap-4">
