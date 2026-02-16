@@ -41,8 +41,8 @@ const Register: React.FC = () => {
     const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string }>({});
     const [showExample, setShowExample] = useState(false);
 
-    // File Upload State
-    const [paymentFile, setPaymentFile] = useState<{ base64: string, name: string, type: string } | null>(null);
+    // File Upload State removed
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -53,38 +53,7 @@ const Register: React.FC = () => {
         }
     };
 
-    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            const file = e.target.files[0];
 
-            // Clear file error
-            if (fieldErrors['paymentFile']) {
-                setFieldErrors(prev => ({ ...prev, paymentFile: '' }));
-            }
-
-            // Limit to 4MB to prevent timeouts
-            if (file.size > 4 * 1024 * 1024) {
-                alert("File is too large. Please upload an image smaller than 4MB.");
-                e.target.value = '';
-                return;
-            }
-
-            // Convert to Base64
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => {
-                setPaymentFile({
-                    base64: reader.result as string,
-                    name: file.name,
-                    type: file.type
-                });
-            };
-            reader.onerror = () => {
-                console.error("Error reading file");
-                alert("Could not read file. Please try another image.");
-            };
-        }
-    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -133,10 +102,7 @@ const Register: React.FC = () => {
             newErrors.transactionId = 'Must be exactly 17 alphanumeric characters';
         }
 
-        // MANDATORY Payment Screenshot Validation
-        if (!paymentFile) {
-            newErrors.paymentFile = 'Payment Screenshot is required';
-        }
+
 
         if (Object.keys(newErrors).length > 0) {
             setFieldErrors(newErrors);
@@ -149,10 +115,6 @@ const Register: React.FC = () => {
             if (element) {
                 element.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 element.focus();
-            } else if (firstErrorKey === 'paymentFile') {
-                // Special handling for file input if name attribute isn't directly on the actionable element or if custom styled
-                const fileInput = document.getElementById('payment-file-upload');
-                if (fileInput) fileInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
 
             return;
@@ -171,7 +133,6 @@ const Register: React.FC = () => {
                 body: JSON.stringify({
                     ...formData,
                     age: calculateAge(formData.dateOfBirth), // Send calculated age for Google Sheet compatibility
-                    paymentFile: paymentFile
                 })
             });
 
@@ -201,7 +162,7 @@ const Register: React.FC = () => {
             transactionId: '',
             notes: ''
         });
-        setPaymentFile(null);
+
         setSubmitted(false);
         setError('');
         setFieldErrors({});
@@ -510,43 +471,7 @@ const Register: React.FC = () => {
                                     )}
                                 </div>
 
-                                {/* File Upload */}
-                                <div className="space-y-2">
-                                    <label className="block text-xs uppercase tracking-wider font-bold text-gray-500">Payment Screenshot *</label>
-                                    <div className={`mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-dashed rounded-lg transition-colors cursor-pointer group relative ${fieldErrors.paymentFile ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-gray-50 hover:bg-gray-100'}`}>
-                                        <input
-                                            id="payment-file-upload"
-                                            name="paymentFile"
-                                            type="file"
-                                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                                            accept="image/*"
-                                            onChange={handleFileChange}
-                                        />
 
-                                        <div className="space-y-1 text-center pointer-events-none">
-                                            {paymentFile ? (
-                                                <div className="flex flex-col items-center">
-                                                    <svg className="w-10 h-10 text-green-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                                                    <p className="text-sm text-gray-900 font-medium">{paymentFile.name}</p>
-                                                    <p className="text-xs text-gray-500">Click to change</p>
-                                                </div>
-                                            ) : (
-                                                <>
-                                                    <svg className={`mx-auto h-12 w-12 transition-colors ${fieldErrors.paymentFile ? 'text-red-400' : 'text-gray-400 group-hover:text-primary'}`} stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                                                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                    </svg>
-                                                    <div className="flex text-sm text-gray-600 justify-center">
-                                                        <span className={`relative rounded-md font-medium focus-within:outline-none ${fieldErrors.paymentFile ? 'text-red-600' : 'text-primary group-hover:text-primary-dark'}`}>
-                                                            Upload Screenshot
-                                                        </span>
-                                                    </div>
-                                                    <p className={`text-xs ${fieldErrors.paymentFile ? 'text-red-500' : 'text-gray-500'}`}>PNG, JPG up to 4MB</p>
-                                                </>
-                                            )}
-                                        </div>
-                                    </div>
-                                    {fieldErrors.paymentFile && <p className="text-red-500 text-xs mt-1 text-center">{fieldErrors.paymentFile}</p>}
-                                </div>
                             </div>
                         </div>
 
