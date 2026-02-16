@@ -76,16 +76,6 @@ const Register: React.FC = () => {
             return;
         }
 
-        // Conditional validation for Parent Name (Required for under 18)
-        const ageNum = parseInt(formData.age);
-        const isMinor = isNaN(ageNum) || ageNum < 18;
-
-        if (isMinor && !formData.parentName) {
-            setError('Parent / Guardian Name is required for participants under 18.');
-            setIsSubmitting(false);
-            return;
-        }
-
         // Validate Phone Number
         // Must start with + and have at least 10 digits
         const phoneRegex = /^\+[0-9\s-]{10,20}$/;
@@ -95,9 +85,17 @@ const Register: React.FC = () => {
             return;
         }
 
+        // Validate Parent Name for Minors
+        const ageNum = parseInt(formData.age);
+        const isMinor = !isNaN(ageNum) && ageNum < 18;
+
+        if (isMinor && !formData.parentName) {
+            setError('Parent / Guardian Name is required for participants under 18.');
+            setIsSubmitting(false);
+            return;
+        }
 
         // Validate Transaction ID format
-        // User confirmed PayPal Transaction IDs are exactly 17 alphanumeric characters.
         const txnIdRegex = /^[A-Za-z0-9]{17}$/;
         if (!txnIdRegex.test(formData.transactionId.trim())) {
             setError('PayPal Transaction ID must be exactly 17 alphanumeric characters (e.g., 0FT064904K8018433).');
@@ -105,14 +103,17 @@ const Register: React.FC = () => {
             return;
         }
 
+        // MANDATORY Payment Screenshot Validation
+        if (!paymentFile) {
+            setError('Please upload a screenshot of your PayPal payment confirmation.');
+            setIsSubmitting(false);
+            return;
+        }
+
         try {
             // Send data to Google Sheet via Google Apps Script Web App
-            // Updated with User's new deployment URL (Fixes getFolderById error)
             const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwySRsWz08jvKXah0L2RSltHN1ALhQ1Y3GNiIFhwnYHncyKBnWrQY1OPZTQB4Oeoj2u/exec";
 
-            // Using fetch with 'no-cors' mode because Google Script doesn't support CORS easily for simple POSTs
-            // This means we won't get a readable response, but the data will be sent.
-            // For a robust implementation, we assume if no network error, it succeeded.
             await fetch(SCRIPT_URL, {
                 method: 'POST',
                 mode: 'no-cors',
@@ -121,9 +122,6 @@ const Register: React.FC = () => {
                 },
                 body: JSON.stringify({
                     ...formData,
-                    // Send file if exists (remove 'data:image/png;base64,' prefix for pure base64 if needed by script, 
-                    // but usually standard google script method can handle parsing or we send full string)
-                    // We will send full string and parse in script.
                     paymentFile: paymentFile
                 })
             });
@@ -141,77 +139,63 @@ const Register: React.FC = () => {
 
     if (submitted) {
         return (
-            <Section className="min-h-[80vh] flex items-center justify-center bg-cream relative overflow-hidden">
-                {/* Background Pattern */}
-                <div className="absolute inset-0 opacity-5 pointer-events-none"
-                    style={{
-                        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230f5132' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
-                    }}
-                ></div>
-
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md">
                 <motion.div
-                    initial={{ scale: 0.9, opacity: 0, y: 20 }}
-                    animate={{ scale: 1, opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
-                    className="max-w-lg w-full relative z-10 mx-4"
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ type: "spring", duration: 0.6, bounce: 0.3 }}
+                    className="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden relative"
                 >
-                    <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 relative">
-                        {/* Top Decorative Line */}
-                        <div className="h-2 bg-[#0f5132] w-full"></div>
+                    {/* Decorative Header */}
+                    <div className="bg-[#0f5132] h-24 relative overflow-hidden flex items-center justify-center">
+                        <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')]"></div>
+                        <motion.div
+                            initial={{ scale: 0, rotate: -180 }}
+                            animate={{ scale: 1, rotate: 0 }}
+                            transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                            className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg relative z-10 mt-10"
+                        >
+                            <svg className="w-10 h-10 text-[#0f5132]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                            </svg>
+                        </motion.div>
+                    </div>
 
-                        <div className="p-8 md:p-12 text-center">
-                            {/* Animated Check Icon */}
-                            <motion.div
-                                initial={{ scale: 0, rotate: -45 }}
-                                animate={{ scale: 1, rotate: 0 }}
-                                transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
-                                className="w-20 h-20 bg-[#0f5132]/10 rounded-full flex items-center justify-center mx-auto mb-6"
+                    <div className="px-8 pt-12 pb-8 text-center">
+                        <h2 className="text-3xl font-serif font-bold text-[#0f5132] mb-1">Registration Complete</h2>
+                        <p className="text-[#DAA520] font-medium tracking-widest text-xs uppercase mb-6">Alhamdulillah</p>
+
+                        <div className="bg-gray-50 rounded-xl p-6 border border-gray-100 mb-6">
+                            <p className="text-gray-500 text-sm mb-2">Participant</p>
+                            <p className="text-xl font-bold text-gray-800 font-serif">{formData.fullName}</p>
+                            <div className="w-full h-px bg-gray-200 my-3"></div>
+                            <p className="text-gray-500 text-sm mb-1">Category</p>
+                            <p className="text-[#0f5132] font-semibold">
+                                {textCategories.find(c => c.id === formData.category)?.title || 'Competition'}
+                            </p>
+                        </div>
+
+                        <p className="text-sm text-gray-500 leading-relaxed mb-6">
+                            Your registration has been received. A confirmation email has been sent to <strong>{formData.email}</strong>.
+                        </p>
+
+                        <div className="space-y-3">
+                            <Button
+                                onClick={() => window.location.reload()}
+                                className="w-full bg-[#0f5132] hover:bg-[#0b3d26] text-white py-3 rounded-lg shadow-md hover:shadow-lg transition-all"
                             >
-                                <svg className="w-10 h-10 text-[#0f5132]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                                </svg>
-                            </motion.div>
-
-                            <h2 className="text-3xl font-serif font-bold text-[#0f5132] mb-2">Registration Successful</h2>
-                            <p className="text-[#DAA520] font-medium tracking-wide uppercase text-xs mb-6">Alhamdulillah</p>
-
-                            <p className="text-gray-600 mb-6 leading-relaxed">
-                                JazakAllah Khair <strong className="text-gray-900">{formData.fullName}</strong>.
-                                We have gratefully received your registration for the
-                                <span className="block mt-1 font-semibold text-[#0f5132]">
-                                    {textCategories.find(c => c.id === formData.category)?.title || 'Competition'}
-                                </span>
-                            </p>
-
-                            <div className="bg-gray-50 rounded-lg p-4 mb-8 border border-gray-100">
-                                <div className="flex items-center justify-center gap-2 text-sm text-gray-500 mb-1">
-                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                                    Confirmation sent to:
-                                </div>
-                                <p className="font-medium text-gray-900">{formData.email}</p>
-                            </div>
-
-                            <p className="text-sm text-gray-400 italic mb-8">
-                                "May Allah bless you with success in this world and the Hereafter."
-                            </p>
-
-                            <div className="space-y-4">
-                                <Button
-                                    onClick={() => window.location.reload()}
-                                    variant="outline"
-                                    className="border-[#0f5132] text-[#0f5132] hover:bg-[#0f5132] hover:text-white w-full"
-                                >
-                                    Register Another Participant
-                                </Button>
-
-                                <div className="text-xs text-gray-400 mt-4">
-                                    Questions? <a href="mailto:londonquranfest@gmail.com" className="text-[#0f5132] hover:underline">londonquranfest@gmail.com</a>
-                                </div>
-                            </div>
+                                Register Another Participant
+                            </Button>
+                            <button
+                                onClick={() => window.location.href = '/'}
+                                className="text-sm text-gray-400 hover:text-gray-600 transition-colors"
+                            >
+                                Return to Home
+                            </button>
                         </div>
                     </div>
                 </motion.div>
-            </Section>
+            </div>
         );
     }
 
@@ -448,7 +432,7 @@ const Register: React.FC = () => {
 
                                 {/* File Upload */}
                                 <div className="space-y-2">
-                                    <label className="block text-xs uppercase tracking-wider font-bold text-gray-500">Payment Screenshot (Optional)</label>
+                                    <label className="block text-xs uppercase tracking-wider font-bold text-gray-500">Payment Screenshot *</label>
                                     <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer group relative">
 
                                         <input
