@@ -107,6 +107,14 @@ const Register: React.FC = () => {
             return;
         }
 
+        // Validate Email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email.trim())) {
+            setError('Please enter a valid email address (e.g. name@example.com).');
+            setIsSubmitting(false);
+            return;
+        }
+
         // Validate Transaction ID format
         const txnIdRegex = /^[A-Za-z0-9]{17}$/;
         if (!txnIdRegex.test(formData.transactionId.trim())) {
