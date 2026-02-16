@@ -12,7 +12,7 @@ const Register: React.FC = () => {
 
     const [formData, setFormData] = useState({
         fullName: '',
-        age: '',
+        dateOfBirth: '',
         gender: 'male',
         category: initialCategory,
         parentName: '',
@@ -22,6 +22,18 @@ const Register: React.FC = () => {
         transactionId: '', // New field for Payment Reference
         notes: ''
     });
+
+    const calculateAge = (dob: string) => {
+        if (!dob) return 0;
+        const birthDate = new Date(dob);
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    };
 
     const [submitted, setSubmitted] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -86,8 +98,8 @@ const Register: React.FC = () => {
         }
 
         // Validate Parent Name for Minors
-        const ageNum = parseInt(formData.age);
-        const isMinor = !isNaN(ageNum) && ageNum < 18;
+        const age = calculateAge(formData.dateOfBirth);
+        const isMinor = age < 18;
 
         if (isMinor && !formData.parentName) {
             setError('Parent / Guardian Name is required for participants under 18.');
@@ -122,6 +134,7 @@ const Register: React.FC = () => {
                 },
                 body: JSON.stringify({
                     ...formData,
+                    age: calculateAge(formData.dateOfBirth), // Send calculated age for Google Sheet compatibility
                     paymentFile: paymentFile
                 })
             });
@@ -254,15 +267,15 @@ const Register: React.FC = () => {
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="block text-xs uppercase tracking-wider font-bold text-gray-500">Age *</label>
+                                    <label className="block text-xs uppercase tracking-wider font-bold text-gray-500">Date of Birth *</label>
                                     <input
-                                        type="text"
-                                        name="age"
+                                        type="date"
+                                        name="dateOfBirth"
                                         required
-                                        value={formData.age}
+                                        value={formData.dateOfBirth}
                                         onChange={handleChange}
+                                        max={new Date().toISOString().split("T")[0]}
                                         className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none font-medium text-gray-800 placeholder-gray-400"
-                                        placeholder="e.g. 12"
                                     />
                                 </div>
                                 <div className="space-y-2">
@@ -314,16 +327,16 @@ const Register: React.FC = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div className="md:col-span-2 space-y-2">
                                     <label className="block text-xs uppercase tracking-wider font-bold text-gray-500">
-                                        Parent / Guardian Name {(!isNaN(parseInt(formData.age)) && parseInt(formData.age) >= 18) ? <span className="text-gray-400 font-normal normal-case">(Optional for 18+)</span> : '*'}
+                                        Parent / Guardian Name {(calculateAge(formData.dateOfBirth) >= 18) ? <span className="text-gray-400 font-normal normal-case">(Optional for 18+)</span> : '*'}
                                     </label>
                                     <input
                                         type="text"
                                         name="parentName"
-                                        required={isNaN(parseInt(formData.age)) || parseInt(formData.age) < 18}
+                                        required={calculateAge(formData.dateOfBirth) < 18}
                                         value={formData.parentName}
                                         onChange={handleChange}
                                         className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none font-medium text-gray-800 placeholder-gray-400"
-                                        placeholder={(!isNaN(parseInt(formData.age)) && parseInt(formData.age) >= 18) ? "Optional" : "Authorized Guardian Name"}
+                                        placeholder={(calculateAge(formData.dateOfBirth) >= 18) ? "Optional" : "Authorized Guardian Name"}
                                     />
                                 </div>
                                 <div className="space-y-2">
