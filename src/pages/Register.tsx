@@ -94,14 +94,7 @@ const Register: React.FC = () => {
             setIsSubmitting(false);
             return;
         }
-        const ageNum = parseInt(formData.age);
-        const isMinor = isNaN(ageNum) || ageNum < 18;
 
-        if (isMinor && !formData.parentName) {
-            setError('Parent / Guardian Name is required for participants under 18.');
-            setIsSubmitting(false);
-            return;
-        }
 
         // Validate Transaction ID format
         // User confirmed PayPal Transaction IDs are exactly 17 alphanumeric characters.
