@@ -206,89 +206,121 @@ const Register: React.FC = () => {
     }
 
     return (
-        <Section className="bg-cream min-h-screen py-12">
-            <div className="max-w-3xl mx-auto">
-                <div className="text-center mb-10">
-                    <h1 className="text-3xl md:text-4xl font-serif font-bold text-primary mb-3">Competition Registration</h1>
-                    <p className="text-gray-600">Please fill out the form faithfully. All fields marked with * are required.</p>
+        <Section className="bg-[#fcfaf7] min-h-screen py-16 relative">
+            {/* Background Pattern */}
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
+                style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230f5132' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+                }}
+            ></div>
+
+            <div className="max-w-4xl mx-auto relative z-10">
+                <div className="text-center mb-12">
+                    <h1 className="text-4xl md:text-5xl font-serif font-bold text-primary mb-4 tracking-tight">Registration</h1>
+                    <div className="w-24 h-1 bg-accent mx-auto rounded-full mb-6"></div>
+                    <p className="text-gray-500 max-w-lg mx-auto font-light text-lg">
+                        "The best of you are those who learn the Quran and teach it."
+                    </p>
                 </div>
 
-                <Card className="p-8 md:p-10 shadow-lg relative">
+                <Card className="p-8 md:p-12 shadow-2xl relative border-t-8 border-primary overflow-hidden">
                     {/* Overlay for submission loading state */}
                     {isSubmitting && (
-                        <div className="absolute inset-0 bg-white/70 z-10 flex items-center justify-center rounded-lg">
-                            <div className="text-primary font-bold text-lg animate-pulse">Submitting...</div>
+                        <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-20 flex flex-col items-center justify-center rounded-lg">
+                            <div className="w-16 h-16 border-4 border-gray-200 border-t-primary rounded-full animate-spin mb-4"></div>
+                            <div className="text-primary font-serif font-bold text-xl animate-pulse">Processing Registration...</div>
                         </div>
                     )}
 
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        {error && <div className="bg-red-50 text-red-600 p-3 rounded text-center text-sm">{error}</div>}
+                    <form onSubmit={handleSubmit} className="space-y-10">
+                        {error && (
+                            <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-r shadow-sm flex items-start">
+                                <span className="mr-2">⚠️</span>
+                                <span>{error}</span>
+                            </div>
+                        )}
 
                         {/* Personal Details */}
                         <div>
-                            <h3 className="text-lg font-bold text-primary border-b border-gray-100 pb-2 mb-4">Participant Details</h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
+                            <h3 className="text-2xl font-serif font-bold text-primary mb-6 flex items-center gap-3">
+                                <span className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-sans">1</span>
+                                Participant Details
+                            </h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div className="space-y-2">
+                                    <label className="block text-xs uppercase tracking-wider font-bold text-gray-500">Full Name *</label>
                                     <input
                                         type="text"
                                         name="fullName"
                                         required
                                         value={formData.fullName}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent"
-                                        placeholder="Participant Name"
+                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none font-medium text-gray-800 placeholder-gray-400"
+                                        placeholder="Enter full name"
                                     />
                                 </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Date of Birth / Age *</label>
+                                <div className="space-y-2">
+                                    <label className="block text-xs uppercase tracking-wider font-bold text-gray-500">Age *</label>
                                     <input
                                         type="text"
                                         name="age"
                                         required
                                         value={formData.age}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent"
-                                        placeholder="e.g. 10 years old"
+                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none font-medium text-gray-800 placeholder-gray-400"
+                                        placeholder="e.g. 12"
                                     />
                                 </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Gender *</label>
-                                    <select
-                                        name="gender"
-                                        value={formData.gender}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent"
-                                    >
-                                        <option value="male">Male</option>
-                                        <option value="female">Female</option>
-                                    </select>
+                                <div className="space-y-2">
+                                    <label className="block text-xs uppercase tracking-wider font-bold text-gray-500">Gender *</label>
+                                    <div className="relative">
+                                        <select
+                                            name="gender"
+                                            value={formData.gender}
+                                            onChange={handleChange}
+                                            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none font-medium text-gray-800 appearance-none"
+                                        >
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
+                                        <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-500">
+                                            ▼
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Select Level *</label>
-                                    <select
-                                        name="category"
-                                        required
-                                        value={formData.category}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent"
-                                    >
-                                        <option value="" disabled>-- Select Level --</option>
-                                        {textCategories.map(cat => (
-                                            <option key={cat.id} value={cat.id}>{cat.title} ({cat.ageLimit})</option>
-                                        ))}
-                                    </select>
+                                <div className="space-y-2">
+                                    <label className="block text-xs uppercase tracking-wider font-bold text-gray-500">Competition Level *</label>
+                                    <div className="relative">
+                                        <select
+                                            name="category"
+                                            required
+                                            value={formData.category}
+                                            onChange={handleChange}
+                                            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none font-medium text-gray-800 appearance-none"
+                                        >
+                                            <option value="" disabled>-- Select Category --</option>
+                                            {textCategories.map(cat => (
+                                                <option key={cat.id} value={cat.id}>{cat.title} ({cat.ageLimit})</option>
+                                            ))}
+                                        </select>
+                                        <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none text-gray-500">
+                                            ▼
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         {/* Guardian & Contact */}
                         <div>
-                            <h3 className="text-lg font-bold text-primary border-b border-gray-100 pb-2 mb-4 mt-2">Guardian & Contact</h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="md:col-span-2">
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Parent / Guardian Name {(!isNaN(parseInt(formData.age)) && parseInt(formData.age) >= 18) ? <span className="text-gray-400 font-normal">(Optional for 18+)</span> : '*'}
+                            <h3 className="text-2xl font-serif font-bold text-primary mb-6 flex items-center gap-3 pt-4 border-t border-gray-100">
+                                <span className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-sans">2</span>
+                                Guardian & Contact
+                            </h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div className="md:col-span-2 space-y-2">
+                                    <label className="block text-xs uppercase tracking-wider font-bold text-gray-500">
+                                        Parent / Guardian Name {(!isNaN(parseInt(formData.age)) && parseInt(formData.age) >= 18) ? <span className="text-gray-400 font-normal normal-case">(Optional for 18+)</span> : '*'}
                                     </label>
                                     <input
                                         type="text"
@@ -296,44 +328,44 @@ const Register: React.FC = () => {
                                         required={isNaN(parseInt(formData.age)) || parseInt(formData.age) < 18}
                                         value={formData.parentName}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent"
-                                        placeholder={(!isNaN(parseInt(formData.age)) && parseInt(formData.age) >= 18) ? "Optional" : "Required for under 18"}
+                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none font-medium text-gray-800 placeholder-gray-400"
+                                        placeholder={(!isNaN(parseInt(formData.age)) && parseInt(formData.age) >= 18) ? "Optional" : "Authorized Guardian Name"}
                                     />
                                 </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
+                                <div className="space-y-2">
+                                    <label className="block text-xs uppercase tracking-wider font-bold text-gray-500">Phone Number *</label>
                                     <input
                                         type="tel"
                                         name="phone"
                                         required
                                         value={formData.phone}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent"
+                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none font-medium text-gray-800 placeholder-gray-400"
                                         placeholder="+44 7..."
                                     />
                                 </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
+                                <div className="space-y-2">
+                                    <label className="block text-xs uppercase tracking-wider font-bold text-gray-500">Email Address *</label>
                                     <input
                                         type="email"
                                         name="email"
                                         required
                                         value={formData.email}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent"
-                                        placeholder="For confirmation"
+                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none font-medium text-gray-800 placeholder-gray-400"
+                                        placeholder="name@example.com"
                                     />
                                 </div>
-                                <div className="md:col-span-2">
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Home Address / City *</label>
+                                <div className="md:col-span-2 space-y-2">
+                                    <label className="block text-xs uppercase tracking-wider font-bold text-gray-500">Address / City *</label>
                                     <input
                                         type="text"
                                         name="address"
                                         required
                                         value={formData.address}
                                         onChange={handleChange}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent"
-                                        placeholder="e.g. East London"
+                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none font-medium text-gray-800 placeholder-gray-400"
+                                        placeholder="Full address"
                                     />
                                 </div>
                             </div>
@@ -341,116 +373,127 @@ const Register: React.FC = () => {
 
                         {/* Payment Details */}
                         <div>
-                            <h3 className="text-lg font-bold text-primary border-b border-gray-100 pb-2 mb-4 mt-2">Payment Verification</h3>
-                            <div className="bg-yellow-50 p-4 rounded-md mb-6 text-sm text-yellow-800 border border-yellow-200">
-                                <p className="font-bold mb-2">Registration Fee: £5.00 / Participant</p>
-                                <p className="mb-4">Please pay via PayPal first, then enter the Transaction ID below.</p>
+                            <h3 className="text-2xl font-serif font-bold text-primary mb-6 flex items-center gap-3 pt-4 border-t border-gray-100">
+                                <span className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-sans">3</span>
+                                Payment Verification
+                            </h3>
 
+                            <div className="bg-[#fcfaf7] p-6 rounded-xl border border-accent/20 mb-8 relative overflow-hidden group hover:shadow-md transition-shadow">
+                                <div className="absolute top-0 right-0 p-4 opacity-10 font-serif text-6xl text-primary font-bold">£</div>
+                                <h4 className="font-bold text-primary text-lg mb-2">Registration Fee: £5.00</h4>
+                                <p className="text-gray-600 text-sm mb-4 max-w-lg">
+                                    Please complete the payment via PayPal first. You will receive a Transaction ID in your email receipt.
+                                </p>
                                 <a
                                     href="https://www.paypal.com/ncp/payment/TPP6PUX3RNVSA"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-2 bg-[#0070BA] text-white px-5 py-2.5 rounded-full font-bold hover:bg-[#005ea6] transition-colors shadow-sm"
+                                    className="inline-flex items-center gap-2 bg-[#0070BA] text-white px-6 py-3 rounded-lg font-bold hover:bg-[#005ea6] transition-all transform hover:-translate-y-0.5 shadow-lg"
                                 >
-                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.946 5.438-3.158 7.12-6.694 7.12H10.5a.5.5 0 0 0-.5.5v1.95c0 .275-.223.5-.5.5h-2.424z" /></svg>
-                                    Pay with PayPal
+                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.946 5.438-3.158 7.12-6.694 7.12H10.5a.5.5 0 0 0-.5.5v1.95c0 .275-.223.5-.5.5h-2.424z" /></svg>
+                                    Pay £5.00 with PayPal
                                 </a>
                             </div>
 
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">PayPal Transaction Reference ID *</label>
-                                <input
-                                    type="text"
-                                    name="transactionId"
-                                    required
-                                    value={formData.transactionId}
-                                    onChange={(e) => {
-                                        // Allow only alphanumeric input to assist user
-                                        const val = e.target.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
-                                        setFormData(prev => ({ ...prev, transactionId: val }));
-                                    }}
-                                    maxLength={17}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent font-mono uppercase"
-                                    placeholder="e.g. 0FT064904K8018433"
-                                />
-                                <p className="text-xs text-gray-500 mt-1">Found in your PayPal receipt email (17 characters).</p>
-
-                                <div className="mt-2">
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowExample(!showExample)}
-                                        className="text-xs text-accent hover:underline flex items-center gap-1 font-medium"
-                                    >
-                                        {showExample ? 'Hide Example' : 'Where can I find this?'}
-                                    </button>
+                            <div className="grid grid-cols-1 gap-8">
+                                <div className="space-y-2">
+                                    <label className="block text-xs uppercase tracking-wider font-bold text-gray-500">PayPal Transaction ID *</label>
+                                    <input
+                                        type="text"
+                                        name="transactionId"
+                                        required
+                                        value={formData.transactionId}
+                                        onChange={(e) => {
+                                            const val = e.target.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+                                            setFormData(prev => ({ ...prev, transactionId: val }));
+                                        }}
+                                        maxLength={17}
+                                        className="w-full px-4 py-3 bg-white border-2 border-dashed border-gray-300 rounded-lg focus:ring-none focus:border-accent transition-all font-mono text-lg uppercase tracking-widest text-center text-primary placeholder-gray-300"
+                                        placeholder="ENTER ID HERE"
+                                    />
+                                    <div className="flex justify-between items-center px-1">
+                                        <p className="text-xs text-gray-400">17-character alphanumeric code</p>
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowExample(!showExample)}
+                                            className="text-xs text-accent hover:text-accent-dark font-bold underline"
+                                        >
+                                            {showExample ? 'Hide Help' : 'Where to find?'}
+                                        </button>
+                                    </div>
 
                                     {showExample && (
                                         <motion.div
                                             initial={{ opacity: 0, height: 0 }}
                                             animate={{ opacity: 1, height: 'auto' }}
-                                            className="mt-2 overflow-hidden"
+                                            className="mt-2"
                                         >
-                                            <div className="border border-gray-200 rounded-md p-1 bg-white inline-block">
-                                                <img
-                                                    src="/paypal-example.png"
-                                                    alt="PayPal Payment Example"
-                                                    className="max-w-[300px] w-full h-auto rounded"
-                                                />
+                                            <div className="border border-gray-200 rounded-lg p-2 bg-white shadow-sm">
+                                                <img src="/paypal-example.png" alt="PayPal Receipt Example" className="w-full h-auto rounded" />
                                             </div>
-                                            <p className="text-[10px] text-gray-400 mt-1 italic">Example: Layout of a PayPal receipt</p>
                                         </motion.div>
                                     )}
                                 </div>
-                            </div>
 
-                            {/* Payment Screenshot Upload */}
-                            <div className="mt-6 border-t border-dashed border-gray-200 pt-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Upload Payment Screenshot (Optional but Recommended)
-                                </label>
-                                <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md bg-white hover:bg-gray-50 transition-colors">
-                                    <div className="space-y-1 text-center">
-                                        <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                        </svg>
-                                        <div className="flex text-sm text-gray-600 justify-center">
-                                            <label htmlFor="file-upload" className="relative cursor-pointer bg-white rounded-md font-medium text-accent hover:text-accent-dark focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-accent">
-                                                <span>Upload a file</span>
-                                                <input id="file-upload" name="file-upload" type="file" className="sr-only" accept="image/*" onChange={handleFileChange} />
-                                            </label>
-                                            <p className="pl-1">or drag and drop</p>
+                                {/* File Upload */}
+                                <div className="space-y-2">
+                                    <label className="block text-xs uppercase tracking-wider font-bold text-gray-500">Payment Screenshot (Optional)</label>
+                                    <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer group relative">
+
+                                        <input
+                                            id="file-upload"
+                                            name="file-upload"
+                                            type="file"
+                                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                            accept="image/*"
+                                            onChange={handleFileChange}
+                                        />
+
+                                        <div className="space-y-1 text-center pointer-events-none">
+                                            {paymentFile ? (
+                                                <div className="flex flex-col items-center">
+                                                    <svg className="w-10 h-10 text-green-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                                    <p className="text-sm text-gray-900 font-medium">{paymentFile.name}</p>
+                                                    <p className="text-xs text-gray-500">Click to change</p>
+                                                </div>
+                                            ) : (
+                                                <>
+                                                    <svg className="mx-auto h-12 w-12 text-gray-400 group-hover:text-primary transition-colors" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                    </svg>
+                                                    <div className="flex text-sm text-gray-600 justify-center">
+                                                        <span className="relative rounded-md font-medium text-primary group-hover:text-primary-dark focus-within:outline-none">
+                                                            Upload Screenshot
+                                                        </span>
+                                                    </div>
+                                                    <p className="text-xs text-gray-500">PNG, JPG up to 4MB</p>
+                                                </>
+                                            )}
                                         </div>
-                                        <p className="text-xs text-gray-500">
-                                            PNG, JPG, GIF up to 4MB
-                                        </p>
-                                        {paymentFile && (
-                                            <div className="mt-2 text-sm text-green-600 font-semibold flex items-center gap-2 justify-center">
-                                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                                                Selected: {paymentFile.name}
-                                            </div>
-                                        )}
                                     </div>
                                 </div>
                             </div>
-
                         </div>
 
                         {/* Notes */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Notes / Medical Conditions</label>
+                        <div className="pt-4 border-t border-gray-100">
+                            <label className="block text-xs uppercase tracking-wider font-bold text-gray-500 mb-2">Additional Notes / Medical Conditions</label>
                             <textarea
                                 name="notes"
                                 value={formData.notes}
                                 onChange={handleChange}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent h-24"
-                                placeholder="Optional..."
+                                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none font-medium text-gray-800 h-24 resize-none"
+                                placeholder="..."
                             />
                         </div>
 
-                        <div className="text-center pt-4">
-                            <Button type="submit" fullWidth disabled={isSubmitting} className="max-w-xs text-lg shadow-lg">
-                                {isSubmitting ? 'Submitting...' : 'Submit Registration'}
+                        <div className="text-center pt-8">
+                            <Button type="submit" fullWidth disabled={isSubmitting} className="max-w-md text-lg font-bold py-4 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all">
+                                {isSubmitting ? 'Submitting Registration...' : 'Complete Registration'}
                             </Button>
+                            <p className="text-xs text-gray-400 mt-4">
+                                By submitting, you agree to the rules and regulations of the competition.
+                            </p>
                         </div>
 
                     </form>
