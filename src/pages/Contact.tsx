@@ -28,8 +28,8 @@ const Contact: React.FC = () => {
                             <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary text-xl"><FaPhone /></div>
                             <div>
                                 <p className="text-xs text-gray-500 uppercase font-bold">Phone</p>
-                                <p className="text-lg font-medium">+91 81 3789 8323 | +91 95627 42433</p>
-                                <p className="text-lg font-medium">+44 791 704 4585</p>
+                                <p className="text-lg font-medium">+44 7466139997 (UK)</p>
+                                <p className="text-lg font-medium">+91 81 3789 8323 (India)</p>
                             </div>
                         </div>
                         <div className="flex items-center gap-4">
@@ -48,8 +48,8 @@ const Contact: React.FC = () => {
                             </div>
                         </div>
                         <div className="pt-2">
-                            <a href="https://wa.me/918137898323" target="_blank" rel="noreferrer">
-                                <Button variant="secondary" className="gap-2 flex items-center w-full md:w-auto justify-center bg-[#25D366] text-white hover:bg-[#128C7E] border-none">
+                            <a href="https://wa.me/447466139997" target="_blank" rel="noreferrer">
+                                <Button variant="secondary" className="gap-2 flex items-center w-full md:w-auto justify-center bg-[#25D366] text-white hover:bg-[#128C7E] border-none shadow-md hover:shadow-lg transition-all">
                                     <FaWhatsapp className="text-xl" /> Chat on WhatsApp
                                 </Button>
                             </a>
