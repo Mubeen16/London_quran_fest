@@ -95,11 +95,12 @@ const Register: React.FC = () => {
         }
 
         // Validate Transaction ID format
-        const txnIdRegex = /^[A-Za-z0-9]{17}$/;
+        // Validate Transaction ID format
+        const txnIdRegex = /^[A-Za-z0-9]{10,25}$/;
         if (!formData.transactionId.trim()) {
             newErrors.transactionId = 'Transaction ID is required';
         } else if (!txnIdRegex.test(formData.transactionId.trim())) {
-            newErrors.transactionId = 'Must be exactly 17 alphanumeric characters';
+            newErrors.transactionId = 'Must be between 10-25 alphanumeric characters';
         }
 
 
@@ -442,13 +443,15 @@ const Register: React.FC = () => {
                                             setFormData(prev => ({ ...prev, transactionId: val }));
                                             if (fieldErrors.transactionId) setFieldErrors(prev => ({ ...prev, transactionId: '' }));
                                         }}
-                                        maxLength={17}
+                                        maxLength={25}
+
                                         className={`w-full px-4 py-3 bg-white border-2 border-dashed rounded-lg focus:ring-none focus:border-accent transition-all font-mono text-lg uppercase tracking-widest text-center text-primary placeholder-gray-300 ${fieldErrors.transactionId ? 'border-red-500 bg-red-50' : 'border-gray-300'}`}
                                         placeholder="ENTER ID HERE"
                                     />
                                     {fieldErrors.transactionId && <p className="text-red-500 text-xs mt-1 text-center">{fieldErrors.transactionId}</p>}
                                     <div className="flex justify-between items-center px-1">
-                                        <p className="text-xs text-gray-400">17-character alphanumeric code</p>
+                                        <p className="text-xs text-gray-400">Enter the Transaction ID from your receipt</p>
+
                                         <button
                                             type="button"
                                             onClick={() => setShowExample(!showExample)}
