@@ -39,7 +39,6 @@ const Register: React.FC = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState('');
     const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string }>({});
-    const [showExample, setShowExample] = useState(false);
 
     // File Upload State removed
 
@@ -94,13 +93,12 @@ const Register: React.FC = () => {
             newErrors.email = 'Invalid email address';
         }
 
-        // Validate Transaction ID format
-        // Validate Transaction ID format
-        const txnIdRegex = /^[A-Za-z0-9]{10,25}$/;
+        // Validate Transaction ID / Bank Reference format
+        const txnIdRegex = /^[A-Za-z0-9\s-]{5,25}$/;
         if (!formData.transactionId.trim()) {
-            newErrors.transactionId = 'Transaction ID is required';
+            newErrors.transactionId = 'Bank reference is required';
         } else if (!txnIdRegex.test(formData.transactionId.trim())) {
-            newErrors.transactionId = 'Must be between 10-25 alphanumeric characters';
+            newErrors.transactionId = 'Must be between 5-25 alphanumeric characters';
         }
 
 
@@ -416,65 +414,52 @@ const Register: React.FC = () => {
                             <div className="bg-[#fcfaf7] p-6 rounded-xl border border-accent/20 mb-8 relative overflow-hidden group hover:shadow-md transition-shadow">
                                 <div className="absolute top-0 right-0 p-4 opacity-10 font-serif text-6xl text-primary font-bold">£</div>
                                 <h4 className="font-bold text-primary text-lg mb-2">Registration Fee: £5.00</h4>
-                                <p className="text-gray-600 text-sm mb-4 max-w-lg">
-                                    Please complete the payment via PayPal first. You will receive a Transaction ID in your email receipt.
+                                <p className="text-gray-600 text-sm mb-4">
+                                    Please complete the payment via Bank Transfer. Use <strong>LQF</strong> and your child's name as the payment reference.
                                 </p>
-                                <a
-                                    href="https://www.paypal.com/ncp/payment/TPP6PUX3RNVSA"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-2 bg-[#0070BA] text-white px-6 py-3 rounded-lg font-bold hover:bg-[#005ea6] transition-all transform hover:-translate-y-0.5 shadow-lg"
-                                >
-                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.946 5.438-3.158 7.12-6.694 7.12H10.5a.5.5 0 0 0-.5.5v1.95c0 .275-.223.5-.5.5h-2.424z" /></svg>
-                                    Pay £5.00 with PayPal
-                                </a>
+
+                                <div className="bg-white p-4 rounded-lg border border-gray-200 mt-4 space-y-2">
+                                    <div className="flex justify-between border-b pb-2">
+                                        <span className="text-gray-500 text-sm font-bold uppercase">Account Name</span>
+                                        <span className="text-gray-800 font-medium">Al Ihsan UK Academy</span>
+                                    </div>
+                                    <div className="flex justify-between border-b pb-2">
+                                        <span className="text-gray-500 text-sm font-bold uppercase">Sort Code</span>
+                                        <span className="text-gray-800 font-mono tracking-widest font-bold">20-21-77</span>
+                                    </div>
+                                    <div className="flex justify-between border-b pb-2">
+                                        <span className="text-gray-500 text-sm font-bold uppercase">Account Number</span>
+                                        <span className="text-gray-800 font-mono tracking-widest font-bold">63209547</span>
+                                    </div>
+                                    <div className="flex justify-between pt-1">
+                                        <span className="text-gray-500 text-sm font-bold uppercase">Reference</span>
+                                        <span className="text-gray-800 font-bold">LQF + Child Name</span>
+                                    </div>
+                                </div>
                             </div>
 
                             <div className="grid grid-cols-1 gap-8">
                                 <div className="space-y-2">
-                                    <label className="block text-xs uppercase tracking-wider font-bold text-gray-500">PayPal Transaction ID *</label>
+                                    <label className="block text-xs uppercase tracking-wider font-bold text-gray-500">Bank Transfer Reference / Transaction ID *</label>
                                     <input
                                         type="text"
                                         name="transactionId"
                                         required
                                         value={formData.transactionId}
                                         onChange={(e) => {
-                                            const val = e.target.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+                                            const val = e.target.value.replace(/[^A-Za-z0-9\s-]/g, '').toUpperCase();
                                             setFormData(prev => ({ ...prev, transactionId: val }));
                                             if (fieldErrors.transactionId) setFieldErrors(prev => ({ ...prev, transactionId: '' }));
                                         }}
                                         maxLength={25}
-
                                         className={`w-full px-4 py-3 bg-white border-2 border-dashed rounded-lg focus:ring-none focus:border-accent transition-all font-mono text-lg uppercase tracking-widest text-center text-primary placeholder-gray-300 ${fieldErrors.transactionId ? 'border-red-500 bg-red-50' : 'border-gray-300'}`}
-                                        placeholder="ENTER ID HERE"
+                                        placeholder="ENTER REF OR ID"
                                     />
                                     {fieldErrors.transactionId && <p className="text-red-500 text-xs mt-1 text-center">{fieldErrors.transactionId}</p>}
-                                    <div className="flex justify-between items-center px-1">
-                                        <p className="text-xs text-gray-400">Enter the Transaction ID from your receipt</p>
-
-                                        <button
-                                            type="button"
-                                            onClick={() => setShowExample(!showExample)}
-                                            className="text-xs text-accent hover:text-accent-dark font-bold underline"
-                                        >
-                                            {showExample ? 'Hide Help' : 'Where to find?'}
-                                        </button>
+                                    <div className="flex justify-center items-center px-1">
+                                        <p className="text-xs text-gray-400">Enter the exact reference you used for the bank transfer</p>
                                     </div>
-
-                                    {showExample && (
-                                        <motion.div
-                                            initial={{ opacity: 0, height: 0 }}
-                                            animate={{ opacity: 1, height: 'auto' }}
-                                            className="mt-2"
-                                        >
-                                            <div className="border border-gray-200 rounded-lg p-2 bg-white shadow-sm">
-                                                <img src="/paypal-example.png" alt="PayPal Receipt Example" className="w-full h-auto rounded" />
-                                            </div>
-                                        </motion.div>
-                                    )}
                                 </div>
-
-
                             </div>
                         </div>
 
