@@ -140,7 +140,7 @@ const Register: React.FC = () => {
                 },
                 body: JSON.stringify({
                     ...formData,
-                    phone: "'" + formattedPhone, // Prepend quote to force Google Sheets to read it as literal text without dropping the + sign
+                    phone: "\u200B" + formattedPhone, // Prepend zero-width space to force Google Sheets to read it as literal text
                     age: calculateAge(formData.dateOfBirth), // Send calculated age for Google Sheet compatibility
                 })
             });
