@@ -137,9 +137,16 @@ const Register: React.FC = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    ...formData,
-                    phone: "\u200B" + formattedPhone, // Prepend zero-width space to force Google Sheets to read it as literal text
-                    age: calculateAge(formData.dateOfBirth), // Send calculated age for Google Sheet compatibility
+                    fullName: formData.fullName,
+                    dateOfBirth: formData.dateOfBirth,
+                    gender: formData.gender,
+                    category: formData.category,
+                    parentName: formData.parentName,
+                    phone: "\u200B" + formattedPhone,
+                    email: formData.email,
+                    address: formData.address,
+                    transactionId: formData.transactionId,
+                    notes: formData.notes
                 })
             });
 
