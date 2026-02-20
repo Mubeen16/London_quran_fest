@@ -39,6 +39,7 @@ const Register: React.FC = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState('');
     const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string }>({});
+    const [paymentMethod, setPaymentMethod] = useState<'paypal' | 'bank'>('paypal');
 
     // File Upload State removed
 
@@ -411,31 +412,65 @@ const Register: React.FC = () => {
                                 Payment Verification
                             </h3>
 
+                            <div className="flex gap-4 mb-6">
+                                <label className={`flex-1 cursor-pointer border-2 rounded-lg p-4 text-center transition-all ${paymentMethod === 'bank' ? 'border-primary bg-primary/5 text-primary shadow-sm' : 'border-gray-200 text-gray-500 hover:border-gray-300'}`}>
+                                    <input type="radio" name="paymentMethod" value="bank" checked={paymentMethod === 'bank'} onChange={() => setPaymentMethod('bank')} className="hidden" />
+                                    <div className="font-bold">Bank Transfer</div>
+                                    <div className="text-xs mt-1">£5.00</div>
+                                </label>
+                                <label className={`flex-1 cursor-pointer border-2 rounded-lg p-4 text-center transition-all ${paymentMethod === 'paypal' ? 'border-primary bg-primary/5 text-primary shadow-sm' : 'border-gray-200 text-gray-500 hover:border-gray-300'}`}>
+                                    <input type="radio" name="paymentMethod" value="paypal" checked={paymentMethod === 'paypal'} onChange={() => setPaymentMethod('paypal')} className="hidden" />
+                                    <div className="font-bold">PayPal</div>
+                                    <div className="text-xs mt-1">£5.25 (inc. 25p fee)</div>
+                                </label>
+                            </div>
+
                             <div className="bg-[#fcfaf7] p-6 rounded-xl border border-accent/20 mb-8 relative overflow-hidden group hover:shadow-md transition-shadow">
                                 <div className="absolute top-0 right-0 p-4 opacity-10 font-serif text-6xl text-primary font-bold">£</div>
-                                <h4 className="font-bold text-primary text-lg mb-2">Registration Fee: £5.00</h4>
-                                <p className="text-gray-600 text-sm mb-4">
-                                    Please complete the payment via Bank Transfer. Use <strong>LQF</strong> and your child's name as the payment reference.
-                                </p>
 
-                                <div className="bg-white p-4 rounded-lg border border-gray-200 mt-4 space-y-2">
-                                    <div className="flex justify-between border-b pb-2">
-                                        <span className="text-gray-500 text-sm font-bold uppercase">Account Name</span>
-                                        <span className="text-gray-800 font-medium">Al Ihsan UK Academy</span>
-                                    </div>
-                                    <div className="flex justify-between border-b pb-2">
-                                        <span className="text-gray-500 text-sm font-bold uppercase">Sort Code</span>
-                                        <span className="text-gray-800 font-mono tracking-widest font-bold">20-21-77</span>
-                                    </div>
-                                    <div className="flex justify-between border-b pb-2">
-                                        <span className="text-gray-500 text-sm font-bold uppercase">Account Number</span>
-                                        <span className="text-gray-800 font-mono tracking-widest font-bold">63209547</span>
-                                    </div>
-                                    <div className="flex justify-between pt-1">
-                                        <span className="text-gray-500 text-sm font-bold uppercase">Reference</span>
-                                        <span className="text-gray-800 font-bold">LQF + Child Name</span>
-                                    </div>
-                                </div>
+                                {paymentMethod === 'bank' ? (
+                                    <>
+                                        <h4 className="font-bold text-primary text-lg mb-2">Registration Fee: £5.00</h4>
+                                        <p className="text-gray-600 text-sm mb-4">
+                                            Please complete the payment via Bank Transfer. Use <strong>LQF</strong> and your child's name as the payment reference.
+                                        </p>
+
+                                        <div className="bg-white p-4 rounded-lg border border-gray-200 mt-4 space-y-2">
+                                            <div className="flex justify-between border-b pb-2">
+                                                <span className="text-gray-500 text-sm font-bold uppercase">Account Name</span>
+                                                <span className="text-gray-800 font-medium">Al Ihsan UK Academy</span>
+                                            </div>
+                                            <div className="flex justify-between border-b pb-2">
+                                                <span className="text-gray-500 text-sm font-bold uppercase">Sort Code</span>
+                                                <span className="text-gray-800 font-mono tracking-widest font-bold">20-21-77</span>
+                                            </div>
+                                            <div className="flex justify-between border-b pb-2">
+                                                <span className="text-gray-500 text-sm font-bold uppercase">Account Number</span>
+                                                <span className="text-gray-800 font-mono tracking-widest font-bold">63209547</span>
+                                            </div>
+                                            <div className="flex justify-between pt-1">
+                                                <span className="text-gray-500 text-sm font-bold uppercase">Reference</span>
+                                                <span className="text-gray-800 font-bold">LQF + Child Name</span>
+                                            </div>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <h4 className="font-bold text-primary text-lg mb-2">Registration Fee: £5.25</h4>
+                                        <p className="text-gray-600 text-sm mb-4 max-w-lg">
+                                            Please complete the payment via PayPal first. Note: There is a 25p processing charge for this payment method. You will receive a Transaction ID in your email receipt.
+                                        </p>
+                                        <a
+                                            href="https://www.paypal.com/ncp/payment/TPP6PUX3RNVSA"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="inline-flex items-center gap-2 bg-[#0070BA] text-white px-6 py-3 rounded-lg font-bold hover:bg-[#005ea6] transition-all transform hover:-translate-y-0.5 shadow-lg"
+                                        >
+                                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.946 5.438-3.158 7.12-6.694 7.12H10.5a.5.5 0 0 0-.5.5v1.95c0 .275-.223.5-.5.5h-2.424z" /></svg>
+                                            Pay £5.25 with PayPal
+                                        </a>
+                                    </>
+                                )}
                             </div>
 
                             <div className="grid grid-cols-1 gap-8">
