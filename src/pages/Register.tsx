@@ -122,7 +122,7 @@ const Register: React.FC = () => {
 
         try {
             // Send data to Google Sheet via Google Apps Script Web App
-            const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwySRsWz08jvKXah0L2RSltHN1ALhQ1Y3GNiIFhwnYHncyKBnWrQY1OPZTQB4Oeoj2u/exec";
+            const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwyG41JhUIxtY2VANYqcCjWnGL26JP7wFGL3c0XWXVTCJdqpamJ5PEEiv4Iuszp-1Q/exec";
 
             await fetch(SCRIPT_URL, {
                 method: 'POST',
