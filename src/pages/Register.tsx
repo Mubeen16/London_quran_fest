@@ -142,7 +142,7 @@ const Register: React.FC = () => {
                     gender: formData.gender,
                     category: formData.category,
                     parentName: formData.parentName,
-                    phone: "\u200B" + formattedPhone,
+                    phone: formattedPhone, // Apps script handles apostrophe prefix
                     email: formData.email,
                     address: formData.address,
                     transactionId: formData.transactionId,
