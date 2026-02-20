@@ -70,12 +70,20 @@ const Register: React.FC = () => {
         if (!formData.address.trim()) newErrors.address = 'Address is required';
 
         // Validate Phone Number
-        const sanitizedPhone = formData.phone.replace(/\s+/g, '');
-        const phoneRegex = /^(\+44\s?7\d{9}|07\d{9}|\+44\s?[12]\d{9}|0[12]\d{9})$/;
-        if (!formData.phone.trim()) {
+        let formattedPhone = formData.phone.replace(/[^0-9+]/g, '');
+        if (formattedPhone.startsWith('0')) {
+            formattedPhone = '+44' + formattedPhone.slice(1);
+        } else if (formattedPhone.startsWith('44')) {
+            formattedPhone = '+' + formattedPhone;
+        } else if (formattedPhone.startsWith('7') && formattedPhone.length === 10) {
+            formattedPhone = '+44' + formattedPhone;
+        }
+
+        const phoneRegex = /^\+44[127]\d{9}$/;
+        if (!formattedPhone) {
             newErrors.phone = 'Phone Number is required';
-        } else if (!phoneRegex.test(sanitizedPhone)) {
-            newErrors.phone = 'Please enter a valid UK phone number.';
+        } else if (!phoneRegex.test(formattedPhone)) {
+            newErrors.phone = 'Please enter a valid UK phone number without spaces.';
         }
 
         // Validate Parent Name for Minors
@@ -132,6 +140,7 @@ const Register: React.FC = () => {
                 },
                 body: JSON.stringify({
                     ...formData,
+                    phone: "'" + formattedPhone, // Prepend quote to force Google Sheets to read it as literal text without dropping the + sign
                     age: calculateAge(formData.dateOfBirth), // Send calculated age for Google Sheet compatibility
                 })
             });
@@ -369,12 +378,16 @@ const Register: React.FC = () => {
                                         name="phone"
                                         required
                                         value={formData.phone}
-                                        onChange={handleChange}
+                                        onChange={(e) => {
+                                            const val = e.target.value.replace(/\s+/g, '');
+                                            setFormData(prev => ({ ...prev, phone: val }));
+                                            if (fieldErrors.phone) setFieldErrors(prev => ({ ...prev, phone: '' }));
+                                        }}
                                         className={`w-full px-4 py-3 bg-gray-50 border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none font-medium text-gray-800 placeholder-gray-400 ${fieldErrors.phone ? 'border-red-500 bg-red-50' : 'border-gray-200'}`}
-                                        placeholder="+44 7..."
+                                        placeholder="+447..."
                                     />
                                     {fieldErrors.phone && <p className="text-red-500 text-xs mt-1">{fieldErrors.phone}</p>}
-                                    <p className="text-xs text-gray-400 mt-1">Format: UK numbers only (e.g. 07... or +447...)</p>
+                                    <p className="text-xs text-gray-400 mt-1">Format: UK numbers only (e.g. +447... or 07... No spaces)</p>
                                 </div>
                                 <div className="space-y-2">
                                     <label className="block text-xs uppercase tracking-wider font-bold text-gray-500">Email Address *</label>
