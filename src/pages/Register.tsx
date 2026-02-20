@@ -70,12 +70,12 @@ const Register: React.FC = () => {
         if (!formData.address.trim()) newErrors.address = 'Address is required';
 
         // Validate Phone Number
-        // Must start with + and have at least 10 digits
-        const phoneRegex = /^\+[0-9\s-]{10,20}$/;
+        const sanitizedPhone = formData.phone.replace(/\s+/g, '');
+        const phoneRegex = /^(\+44\s?7\d{9}|07\d{9}|\+44\s?[12]\d{9}|0[12]\d{9})$/;
         if (!formData.phone.trim()) {
             newErrors.phone = 'Phone Number is required';
-        } else if (!phoneRegex.test(formData.phone.trim())) {
-            newErrors.phone = 'Invalid format. Use +[Code][Number] (e.g. +44 7466 123456)';
+        } else if (!phoneRegex.test(sanitizedPhone)) {
+            newErrors.phone = 'Please enter a valid UK phone number.';
         }
 
         // Validate Parent Name for Minors
@@ -87,11 +87,11 @@ const Register: React.FC = () => {
         }
 
         // Validate Email
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
         if (!formData.email.trim()) {
             newErrors.email = 'Email Address is required';
         } else if (!emailRegex.test(formData.email.trim())) {
-            newErrors.email = 'Invalid email address';
+            newErrors.email = 'Please enter a valid email address.';
         }
 
         // Validate Transaction ID / Bank Reference format
@@ -374,7 +374,7 @@ const Register: React.FC = () => {
                                         placeholder="+44 7..."
                                     />
                                     {fieldErrors.phone && <p className="text-red-500 text-xs mt-1">{fieldErrors.phone}</p>}
-                                    <p className="text-xs text-gray-400 mt-1">Format: +[Country Code] [Number] (e.g. +44 7466 123456)</p>
+                                    <p className="text-xs text-gray-400 mt-1">Format: UK numbers only (e.g. 07... or +447...)</p>
                                 </div>
                                 <div className="space-y-2">
                                     <label className="block text-xs uppercase tracking-wider font-bold text-gray-500">Email Address *</label>
