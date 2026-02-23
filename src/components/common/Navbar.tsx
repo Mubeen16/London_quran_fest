@@ -26,16 +26,16 @@ const Navbar: React.FC = () => {
                             <div className="absolute inset-0 bg-accent/20 rounded-full blur-md group-hover:bg-accent/40 transition-all duration-500"></div>
                             <img
                                 src="/logo.png"
-                                alt="Al Ihsan Academy Logo"
+                                alt="LQF Logo"
                                 className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover border-2 border-accent relative z-10"
                             />
                         </div>
-                        <div className="flex flex-col">
-                            <span className="font-serif font-bold text-lg md:text-xl tracking-wider text-white group-hover:text-accent transition-colors">
-                                AL IHSAN
+                        <div className="flex flex-col ml-3 justify-center">
+                            <span className="font-serif font-bold text-xl md:text-xl tracking-[0.28em] text-white group-hover:text-accent transition-colors leading-none mb-1">
+                                LONDON
                             </span>
-                            <span className="text-[10px] md:text-xs text-gray-400 uppercase tracking-[0.2em] group-hover:text-white transition-colors">
-                                ACADEMY
+                            <span className="font-sans font-bold text-[11px] md:text-xs tracking-[0.3em] text-accent uppercase transition-colors leading-none">
+                                QURAN FEST
                             </span>
                         </div>
                     </Link>

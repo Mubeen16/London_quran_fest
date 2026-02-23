@@ -8,9 +8,19 @@ const Rules: React.FC = () => {
                     <h1 className="text-4xl md:text-6xl font-serif font-bold text-primary mb-6 tracking-tight">
                         London Qur'an Fest <span className="text-secondary">2026</span> Rules
                     </h1>
-                    <p className="text-xl text-gray-600 leading-relaxed font-light">
+                    <p className="text-xl text-gray-600 leading-relaxed font-light mb-8">
                         Kindly go through the following instructions carefully so that we can avoid any setbacks during the competition:
                     </p>
+                    <a
+                        href="/LQF-Rules-2026.pdf"
+                        download
+                        className="inline-flex items-center gap-2 bg-accent text-primary font-bold py-3 px-8 rounded-full hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                    >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        Download Rules as PDF
+                    </a>
                 </div>
             </div>
 
@@ -139,6 +149,35 @@ const Rules: React.FC = () => {
                             <li className="flex gap-3">
                                 <span className="text-primary mt-1">•</span>
                                 <span>If you require any support before or during the competition, please contact our support team.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    {/* Section 5: Prizes */}
+                    <div className="bg-accent/10 rounded-2xl shadow-sm border border-accent/20 p-8 md:p-10 transition-shadow hover:shadow-md">
+                        <div className="flex items-center gap-4 mb-6">
+                            <span className="flex items-center justify-center w-10 h-10 rounded-full bg-accent text-primary font-bold text-lg">5</span>
+                            <h2 className="text-2xl font-bold text-primary m-0">Prizes & Awards</h2>
+                        </div>
+                        <p className="text-gray-700 leading-relaxed mb-4">
+                            We are excited to offer cash prizes for top performers across <strong>all levels</strong>:
+                        </p>
+                        <ul className="space-y-4 text-gray-700 leading-relaxed font-medium">
+                            <li className="flex items-center gap-3">
+                                <span className="text-accent text-xl">🥇</span>
+                                <span><strong>1st Prize:</strong> £100</span>
+                            </li>
+                            <li className="flex items-center gap-3">
+                                <span className="text-accent text-xl">🥈</span>
+                                <span><strong>2nd Prize:</strong> £75</span>
+                            </li>
+                            <li className="flex items-center gap-3">
+                                <span className="text-accent text-xl">🥉</span>
+                                <span><strong>3rd Prize:</strong> £50</span>
+                            </li>
+                            <li className="flex items-center gap-3 pt-2 border-t border-accent/20">
+                                <span className="text-accent text-xl">⭐️</span>
+                                <span><strong>Consolation Prize:</strong> £25 for the rest of the finalists (maximum 12 people per level).</span>
                             </li>
                         </ul>
                     </div>

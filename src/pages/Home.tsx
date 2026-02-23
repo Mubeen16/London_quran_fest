@@ -70,8 +70,8 @@ const Home: React.FC = () => {
                     </Card>
                     <Card animate className="p-8">
                         <div className="text-accent text-4xl mb-4 flex justify-center"><FaAward /></div>
-                        <h3 className="text-xl font-bold mb-2">Prestigious Awards</h3>
-                        <p className="text-gray-600">Win scholarships, trophies, and recognition from renowned scholars.</p>
+                        <h3 className="text-xl font-bold mb-2">Cash Prizes</h3>
+                        <p className="text-gray-600">£100 for 1st, £75 for 2nd, and £50 for 3rd place across all levels. Plus, £25 for all finalists!</p>
                     </Card>
                 </div>
             </Section>
