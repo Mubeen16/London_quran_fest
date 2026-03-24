@@ -7,6 +7,7 @@ import { textCategories } from '../data/categories';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FaQuran, FaMicrophone, FaAward } from 'react-icons/fa';
+import { IS_REGISTRATION_OPEN } from '../constants';
 
 const Home: React.FC = () => {
     return (
@@ -38,11 +39,17 @@ const Home: React.FC = () => {
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-                            <Link to="/register">
-                                <Button variant="secondary" className="w-full sm:w-auto text-lg px-8">
-                                    Register Now
+                            {IS_REGISTRATION_OPEN ? (
+                                <Link to="/register">
+                                    <Button variant="secondary" className="w-full sm:w-auto text-lg px-8">
+                                        Register Now
+                                    </Button>
+                                </Link>
+                            ) : (
+                                <Button variant="secondary" className="w-full sm:w-auto text-lg px-8 opacity-70 cursor-not-allowed bg-gray-500 hover:bg-gray-500">
+                                    Registration Closed
                                 </Button>
-                            </Link>
+                            )}
                             <Link to="/categories">
                                 <Button variant="outline" className="w-full sm:w-auto text-lg px-8 text-white border-white hover:bg-white/10">
                                     View Categories

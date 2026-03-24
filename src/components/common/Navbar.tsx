@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { HiMenu, HiX } from 'react-icons/hi';
 import { motion, AnimatePresence } from 'framer-motion';
+import { IS_REGISTRATION_OPEN } from '../../constants';
 
 const Navbar: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -56,11 +57,17 @@ const Navbar: React.FC = () => {
 
                     {/* CTA Button */}
                     <div className="hidden lg:block ml-6">
-                        <Link to="/register">
-                            <button className="relative px-6 py-2.5 bg-gradient-to-r from-accent to-yellow-600 text-primary-dark font-bold text-sm uppercase tracking-wider rounded shadow-[0_0_15px_rgba(218,165,32,0.3)] hover:shadow-[0_0_25px_rgba(218,165,32,0.6)] hover:scale-105 transition-all duration-300">
-                                Register Now
+                        {IS_REGISTRATION_OPEN ? (
+                            <Link to="/register">
+                                <button className="relative px-6 py-2.5 bg-gradient-to-r from-accent to-yellow-600 text-primary-dark font-bold text-sm uppercase tracking-wider rounded shadow-[0_0_15px_rgba(218,165,32,0.3)] hover:shadow-[0_0_25px_rgba(218,165,32,0.6)] hover:scale-105 transition-all duration-300">
+                                    Register Now
+                                </button>
+                            </Link>
+                        ) : (
+                            <button className="relative px-6 py-2.5 bg-gray-700 text-gray-300 font-bold text-sm uppercase tracking-wider rounded shadow-md cursor-not-allowed opacity-80">
+                                Registration Closed
                             </button>
-                        </Link>
+                        )}
                     </div>
 
                     {/* Mobile Menu Button */}
@@ -93,13 +100,19 @@ const Navbar: React.FC = () => {
                                     {link.name}
                                 </Link>
                             ))}
-                            <Link
-                                to="/register"
-                                onClick={() => setIsOpen(false)}
-                                className="mt-4 bg-accent text-primary-dark font-bold py-3 px-4 rounded text-center uppercase tracking-widest shadow-lg"
-                            >
-                                Register Now
-                            </Link>
+                            {IS_REGISTRATION_OPEN ? (
+                                <Link
+                                    to="/register"
+                                    onClick={() => setIsOpen(false)}
+                                    className="mt-4 bg-accent text-primary-dark font-bold py-3 px-4 rounded text-center uppercase tracking-widest shadow-lg"
+                                >
+                                    Register Now
+                                </Link>
+                            ) : (
+                                <div className="mt-4 bg-gray-700 text-gray-300 font-bold py-3 px-4 rounded text-center uppercase tracking-widest shadow-lg opacity-80 cursor-not-allowed">
+                                    Registration Closed
+                                </div>
+                            )}
                         </div>
                     </motion.div>
                 )}

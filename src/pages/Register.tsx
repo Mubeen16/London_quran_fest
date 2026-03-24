@@ -6,6 +6,7 @@ import { textCategories } from '../data/categories';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js';
+import { IS_REGISTRATION_OPEN } from '../constants';
 
 const Register: React.FC = () => {
     const [searchParams] = useSearchParams();
@@ -182,6 +183,29 @@ const Register: React.FC = () => {
         setFieldErrors({});
         window.scrollTo(0, 0);
     };
+
+    if (!IS_REGISTRATION_OPEN) {
+        return (
+            <Section className="bg-[#fcfaf7] min-h-[70vh] py-16 flex items-center justify-center">
+                <div className="max-w-2xl mx-auto text-center px-4">
+                    <Card className="p-8 md:p-12 shadow-xl border-t-8 border-primary md:min-w-[500px]">
+                        <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <svg className="w-10 h-10 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                        </div>
+                        <h2 className="text-3xl font-serif font-bold text-primary mb-4">Registration Closed</h2>
+                        <p className="text-gray-600 mb-8 leading-relaxed">
+                            Thank you for your interest! Registration for the 2026 Quran Fest is now officially closed. We look forward to seeing you at the event.
+                        </p>
+                        <Button onClick={() => navigate('/')} variant="outline" className="w-full sm:w-auto">
+                            Return to Home
+                        </Button>
+                    </Card>
+                </div>
+            </Section>
+        );
+    }
 
     if (submitted) {
         return (
