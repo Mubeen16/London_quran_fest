@@ -35,6 +35,31 @@ const CountdownTimer: React.FC = () => {
         return () => clearInterval(timer);
     }, []);
 
+    const isCompetitionLive = timeLeft.days === 0 && timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0;
+
+    if (isCompetitionLive) {
+        return (
+            <div className="flex flex-col items-center">
+                <motion.div
+                    initial={{ scale: 0.9, opacity: 0.8 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="bg-white/10 backdrop-blur-sm border border-accent/20 rounded-lg p-6 md:p-8 shadow-lg text-center flex flex-col items-center"
+                >
+                    <h3 className="text-3xl md:text-4xl font-serif text-accent mb-2">Welcome to the Competition!</h3>
+                    <p className="text-lg md:text-xl text-gray-200 mt-2 mb-6">We wish all participants the best of luck today.</p>
+                    <a 
+                        href="https://www.youtube.com/live/KNCy1_CVdEk" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center bg-red-600 hover:bg-red-700 text-white font-semibold py-2.5 px-6 rounded-full transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm md:text-base"
+                    >
+                        Watch Live on YouTube
+                    </a>
+                </motion.div>
+            </div>
+        );
+    }
+
     const timeUnits = [
         { label: 'Days', value: timeLeft.days },
         { label: 'Hours', value: timeLeft.hours },

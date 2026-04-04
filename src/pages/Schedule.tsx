@@ -5,7 +5,7 @@ import { FaMapMarkerAlt, FaClock } from 'react-icons/fa';
 
 const Schedule: React.FC = () => {
     const events = [
-        { day: 'Saturday', date: 'April 04, 2026', time: '10:00 - 18:00', title: 'Preliminary Round (Online)', location: 'Zoom / Online' },
+        { day: 'Saturday', date: 'April 04, 2026', time: '10:00 - 18:00', title: 'Preliminary Round (Online)', location: 'Zoom / Online', link: 'https://www.youtube.com/live/KNCy1_CVdEk' },
         { day: 'Saturday', date: 'April 11, 2026', time: '09:00 - 17:00', title: 'Grand Finale (All Categories)', location: 'London (Venue TBC)' },
         { day: 'Saturday', date: 'April 11, 2026', time: '18:00 - 20:00', title: 'Award Ceremony', location: 'London (Venue TBC)' },
     ];
@@ -34,7 +34,14 @@ const Schedule: React.FC = () => {
                                             <FaClock className="text-accent" /> {event.time}
                                         </div>
                                         <div className="flex items-center gap-1">
-                                            <FaMapMarkerAlt className="text-accent" /> {event.location}
+                                            <FaMapMarkerAlt className="text-accent" /> 
+                                            {event.link ? (
+                                                <a href={event.link} target="_blank" rel="noopener noreferrer" className="text-accent hover:underline font-medium">
+                                                    {event.location}
+                                                </a>
+                                            ) : (
+                                                event.location
+                                            )}
                                         </div>
                                     </div>
                                 </div>

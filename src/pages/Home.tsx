@@ -1,13 +1,12 @@
 import React from 'react';
 import Section from '../components/common/Section';
-import Button from '../components/common/Button';
 import Card from '../components/common/Card';
+import Button from '../components/common/Button';
 import CountdownTimer from '../components/feature/CountdownTimer';
 import { textCategories } from '../data/categories';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FaQuran, FaMicrophone, FaAward } from 'react-icons/fa';
-import { IS_REGISTRATION_OPEN } from '../constants';
 
 const Home: React.FC = () => {
     return (
@@ -34,28 +33,9 @@ const Home: React.FC = () => {
                             London's most awaited <br /><span className="text-accent">Quran Fest '26</span>
                         </h1>
 
-                        <p className="max-w-2xl mx-auto text-lg text-gray-200 mb-10 leading-relaxed uppercase tracking-widest font-semibold text-accent">
+                        <p className="max-w-2xl mx-auto text-lg text-gray-200 mb-12 leading-relaxed uppercase tracking-widest font-semibold text-accent">
                             Celebrating the Qur'an
                         </p>
-
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-                            {IS_REGISTRATION_OPEN ? (
-                                <Link to="/register">
-                                    <Button variant="secondary" className="w-full sm:w-auto text-lg px-8">
-                                        Register Now
-                                    </Button>
-                                </Link>
-                            ) : (
-                                <Button variant="secondary" className="w-full sm:w-auto text-lg px-8 opacity-70 cursor-not-allowed bg-gray-500 hover:bg-gray-500">
-                                    Registration Closed
-                                </Button>
-                            )}
-                            <Link to="/categories">
-                                <Button variant="outline" className="w-full sm:w-auto text-lg px-8 text-white border-white hover:bg-white/10">
-                                    View Categories
-                                </Button>
-                            </Link>
-                        </div>
 
                         <CountdownTimer />
                     </motion.div>
